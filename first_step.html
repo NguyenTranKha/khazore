@@ -1,19 +1,158 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bài viết đầu tiên</title>
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.6; max-width: 650px; margin: 0 auto; padding: 20px; color: #333; }
-        a { color: #0066cc; text-decoration: none; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chinh Phục Núi Bà Đen - Nóc Nhà Nam Bộ</title>
+  <style>
+    :root {
+      --primary: #2d5a27;
+      --accent: #e07a5f;
+      --bg: #f8f9fa;
+      --text: #2b2d42;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), 
+                  url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80') center/cover;
+      height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: -1px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: -3rem auto 3rem;
+      padding: 0 1.5rem;
+    }
+
+    .card {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0 2rem;
+      padding: 1rem;
+      background: #f1f5f9;
+      border-radius: 8px;
+    }
+
+    .meta-item {
+      text-align: center;
+    }
+
+    .meta-item strong {
+      display: block;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    h2 {
+      color: var(--primary);
+      margin: 1.5rem 0 0.8rem;
+      font-size: 1.5rem;
+    }
+
+    ul {
+      padding-left: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    li {
+      margin-bottom: 0.4rem;
+    }
+
+    .highlight-box {
+      border-left: 4px solid var(--accent);
+      background: #fff8f6;
+      padding: 1rem 1.2rem;
+      margin: 1.5rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+  </style>
 </head>
 <body>
-    <a href="index.html">&larr; Quay lại trang chủ</a>
-    <h1>Bài viết đầu tiên</h1>
-    <p><em>Đăng ngày: 04/09/2026</em></p>
-    <hr>
-    <p>Đây là nội dung chi tiết bài viết đầu tiên được đăng trực tiếp từ điện thoại!</p>
+
+  <header class="hero">
+    <h1>Chinh Phục Núi Bà Đen</h1>
+    <p>Hành trình khám phá nóc nhà Nam Bộ ở độ cao 986m</p>
+  </header>
+
+  <main class="container">
+    <article class="card">
+      <p>Sở hữu độ cao 986m so với mực nước biển, <strong>Núi Bà Đen</strong> (Tây Ninh) không chỉ là điểm đến tâm linh nổi tiếng mà còn là tọa độ trekking lý tưởng cho những ai yêu thích thử thách và thiên nhiên hoang sơ.</p>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <strong>Độ cao</strong>
+          <span>986m</span>
+        </div>
+        <div class="meta-item">
+          <strong>Thời gian leo</strong>
+          <span>3 - 7 tiếng</span>
+        </div>
+        <div class="meta-item">
+          <strong>Độ khó</strong>
+          <span>Trung bình</span>
+        </div>
+      </div>
+
+      <h2>Cung Đường Leo Phổ Biến</h2>
+      <ul>
+        <li><strong>Đường Chùa:</strong> Cung đường ngắn nhất nhưng độ dốc cao, nhiều bậc thang, phù hợp cho người mới bắt đầu.</li>
+        <li><strong>Đường Cột Điện:</strong> Đường mòn có vạch chỉ dẫn rõ ràng, đi dưới bóng râm cây rừng, độ dốc vừa phải.</li>
+        <li><strong>Đường Đá Dốc / Ma Thiên Lãnh:</strong> Dành cho trekkers có thể lực tốt và kinh nghiệm vì địa hình nhiều mỏm đá lớn, rậm rạp.</li>
+      </ul>
+
+      <div class="highlight-box">
+        <strong>💡 Mẹo nhỏ:</strong> Thời điểm lý tưởng nhất để bắt đầu leo là từ 4:30 - 5:00 sáng để kịp đón bình minh và tránh cái nắng gắt buổi trưa.
+      </div>
+
+      <h2>Hành Trang Cần Chuẩn Bị</h2>
+      <ul>
+        <li>Tối thiểu 2 - 3 lít nước cùng nước điện giải.</li>
+        <li>Giày trekking có độ bám tốt và gậy leo núi.</li>
+        <li>Đồ ăn nhẹ tiếp năng lượng (lương khô, đạm, hạt).</li>
+        <li>Y tế cá nhân: Xịt muỗi, băng gạc, xịt giảm đau.</li>
+      </ul>
+    </article>
+  </main>
+
 </body>
 </html>
