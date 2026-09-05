@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KHAZORE — Blog Cá Nhân &amp; Ký Sự Kỹ Thuật</title>
+  
+  <!-- Phông chữ Google Fonts (Inter & Playfair Display) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            brand: {
+              50: '#faf8f5',
+              100: '#f4ede4',
+              500: '#d97706',
+              600: '#b45309',
+              900: '#78350f',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Tùy biến thanh cuộn mượt mà */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #a1a1aa;
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #3f3f46;
+    }
+
+    /* Ẩn thanh cuộn cho thanh danh mục cuộn ngang */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+
+<body class="bg-[#fafaf9] text-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 transition-colors duration-300 font-sans min-h-screen flex flex-col justify-between">
+
+  <!-- ==================== 1. HEADER & NAVIGATION ==================== -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-zinc-950/80 border-b border-zinc-200/80 dark:border-zinc-800/80 transition-colors">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="flex items-center gap-3 group">
+        <div class="w-9 h-9 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 flex items-center justify-center font-serif text-lg font-bold shadow-sm transition-transform group-hover:scale-105">
+          K
+        </div>
+        <div>
+          <span class="font-serif text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
+            KHAZORE
+          </span>
+          <span class="block text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-widest -mt-1 font-medium">
+            Personal Space
+          </span>
+        </div>
+      </a>
+
+      <!-- Thanh tìm kiếm nhanh (Desktop) -->
+      <div class="hidden sm:flex items-center flex-1 max-w-xs relative mx-6">
+        <svg class="w-4 h-4 absolute left-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8" stroke-width="2"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2"></line>
+        </svg>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Tìm bài viết..."
+          class="w-full text-xs bg-zinc-100 dark:bg-zinc-900 border border-transparent focus:border-zinc-300 dark:focus:border-zinc-700 rounded-full pl-9 pr-8 py-2 focus:outline-none transition-all placeholder:text-zinc-400"
+        />
+        <button id="clearSearchBtn" class="hidden absolute right-3 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18" stroke-width="2"></line>
+            <line x1="6" y1="6" x2="18" y2="18" stroke-width="2"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2">
+        <!-- Chuyển đổi Dark / Light Theme -->
+        <button
+          id="themeToggleBtn"
+          aria-label="Đổi giao diện Sáng / Tối"
+          class="p-2 rounded-xl text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+        >
+          <!-- Icon Sun -->
+          <svg id="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" stroke-width="2"></circle>
+            <path stroke-width="2" d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+          </svg>
+          <!-- Icon Moon -->
+          <svg id="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-width="2" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+
+        <!-- Nút đọc bài mới nhất -->
+        <a
+          href="sine_simulation.html"
+          class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-medium bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white shadow-sm transition"
+        >
+          <span>Bài mới: Sóng Sin</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Thanh tìm kiếm trên Mobile -->
+    <div class="sm:hidden px-4 pb-3">
+      <div class="flex items-center relative">
+        <svg class="w-4 h-4 absolute left-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8" stroke-width="2"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2"></line>
+        </svg>
+        <input
+          id="mobileSearchInput"
+          type="text"
+          placeholder="Tìm bài viết..."
+          class="w-full text-xs bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/50 dark:border-zinc-800 rounded-full pl-9 pr-4 py-2 focus:outline-none"
+        />
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== 2. MAIN CONTENT ==================== -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-1 w-full">
+
+    <!-- Giới thiệu ngắn gọn KHAZORE -->
+    <section class="mb-10 text-center sm:text-left flex flex-col sm:flex-row sm:items-end justify-between border-b border-zinc-200 dark:border-zinc-800 pb-6 gap-4">
+      <div>
+        <h1 class="text-3xl sm:text-4xl font-serif font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
+          Khám phá không gian <span class="text-amber-600 dark:text-amber-500">Khazore</span>
+        </h1>
+        <p class="mt-2 text-sm sm:text-base text-zinc-600 dark:text-zinc-400 max-w-xl">
+          Nơi ghi lại những suy ngẫm, dòng code tinh gọn và những bước đi đầu tiên trên hành trình công nghệ.
+        </p>
+      </div>
+      <div class="flex items-center justify-center sm:justify-end gap-2 text-xs text-zinc-500">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>Static Site • Hosted on GitHub</span>
+      </div>
+    </section>
+
+    <!-- ==================== BÀI VIẾT TIÊU ĐIỂM (BÀI MỚI NHẤT: SÓNG SIN) ==================== -->
+    <section class="mb-12">
+      <div class="group relative rounded-2xl overflow-hidden bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800/80 shadow-sm hover:shadow-md transition-all duration-300 grid grid-cols-1 md:grid-cols-12">
+        
+        <!-- Ảnh bài viết -->
+        <div class="md:col-span-6 overflow-hidden relative min-h-[220px] sm:min-h-[300px]">
+          <img
+            src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1000&q=80"
+            alt="Mô phỏng sóng Sin"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+            onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80'"
+          />
+          <div class="absolute top-4 left-4 bg-amber-600 text-white px-3 py-1 rounded-full text-[11px] font-semibold tracking-wider uppercase shadow-sm">
+            Bài mới nhất
+          </div>
+        </div>
+
+        <!-- Thông tin tiêu điểm -->
+        <div class="md:col-span-6 p-6 sm:p-8 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-3 text-xs">
+              <span class="font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider">
+                Knowledge
+              </span>
+              <span class="text-zinc-300 dark:text-zinc-700">•</span>
+              <span class="text-zinc-500">sine_simulation.html</span>
+            </div>
+
+            <h2 class="font-serif text-2xl sm:text-3xl font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors leading-snug">
+              <a href="sine_simulation.html">Mô phỏng sóng Sin: Vẻ đẹp toán học và tín hiệu tuần hoàn</a>
+            </h2>
+
+            <p class="mt-3 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed line-clamp-3">
+              Trực quan hóa hàm Sin qua Canvas tương tác thời gian thực. Khám phá vẻ đẹp toán học từ vi điều khiển, kỹ thuật SPWM đến ứng dụng trong kiến trúc AI Transformer.
+            </p>
+          </div>
+
+          <!-- Các nút thao tác -->
+          <div class="pt-6 mt-6 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between">
+            <div class="flex items-center gap-2 text-xs text-zinc-500">
+              <span class="font-medium text-zinc-800 dark:text-zinc-200">Khazore</span>
+              <span>•</span>
+              <span>5 phút đọc</span>
+            </div>
+
+            <div class="flex items-center gap-3">
+              <button
+                onclick="copyPageUrl('sine_simulation.html')"
+                title="Sao chép liên kết bài viết"
+                class="p-2 rounded-lg text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+              </button>
+
+              <a
+                href="sine_simulation.html"
+                class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-amber-600 hover:bg-amber-500 text-white transition shadow-sm"
+              >
+                Khám phá ngay
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== BỘ LỌC DANH MỤC (CUỘN NGANG TRÊN 1 HÀNG) ==================== -->
+    <div class="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3 mb-6 gap-4">
+      <div id="categoryChips" class="flex items-center gap-2 overflow-x-auto no-scrollbar whitespace-nowrap py-1">
+        <button data-cat="all" class="cat-btn shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 transition">
+          Tất cả
+        </button>
+        <button data-cat="work" class="cat-btn shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition">
+          Work
+        </button>
+        <button data-cat="sport" class="cat-btn shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition">
+          Sport
+        </button>
+        <button data-cat="knowledge" class="cat-btn shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition">
+          Knowledge
+        </button>
+      </div>
+
+      <span id="articleCount" class="text-xs text-zinc-400 shrink-0">
+        5 bài viết
+      </span>
+    </div>
+
+    <!-- Danh sách bài viết (Cards Grid) -->
+    <section>
+      <div id="postsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Card 1: sine_simulation.html -> Danh mục Knowledge -->
+        <article data-category="knowledge" class="post-card bg-white dark:bg-zinc-900/50 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 overflow-hidden hover:border-zinc-400 dark:hover:border-zinc-700 transition flex flex-col justify-between">
+          <div>
+            <div class="aspect-[16/10] overflow-hidden bg-zinc-100 dark:bg-zinc-800 relative">
+              <img
+                src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80"
+                alt="Mô phỏng sóng Sin"
+                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80'"
+              />
+              <span class="absolute top-3 left-3 bg-amber-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider">
+                Mới nhất
+              </span>
+            </div>
+            <div class="p-5">
+              <span class="text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider block mb-1.5">
+                Knowledge
+              </span>
+              <h3 class="font-serif text-lg font-bold text-zinc-900 dark:text-zinc-100 line-clamp-2 leading-snug">
+                <a href="sine_simulation.html" class="hover:underline">Mô phỏng sóng Sin: Vẻ đẹp toán học và tín hiệu tuần hoàn</a>
+              </h3>
+              <p class="mt-2 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 line-clamp-3">
+                Trực quan hóa hàm Sin qua Canvas tương tác trực tiếp. Khám phá ứng dụng từ vi điều khiển, xung SPWM đến kiến trúc Transformer.
+              </p>
+            </div>
+          </div>
+
+          <div class="px-5 pb-5 pt-3 border-t border-zinc-100 dark:border-zinc-800/60 flex items-center justify-between text-xs text-zinc-500">
+            <span>5 phút đọc</span>
+            <a href="sine_simulation.html" class="font-medium text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1">
+              Khám phá →
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 2: first_step.html -> Danh mục Work -->
+        <article data-category="work" class="post-card bg-white dark:bg-zinc-900/50 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 overflow-hidden hover:border-zinc-400 dark:hover:border-zinc-700 transition flex flex-col justify-between">
+          <div>
+            <div class="aspect-[16/10] overflow-hidden bg-zinc-100 dark:bg-zinc-800 relative">
+              <img
+                src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80"
+                alt="First Step"
+                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80'"
+              />
+              <span class="absolute top-3 left-3 bg-zinc-800 text-white text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider">
+                first_step.html
+              </span>
+            </div>
+            <div class="p-5">
+              <span class="text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider block mb-1.5">
+                Work
+              </span>
+              <h3 class="font-serif text-lg font-bold text-zinc-900 dark:text-zinc-100 line-clamp-2 leading-snug">
+                <a href="first_step.html" class="hover:underline">Hành trình khởi tạo: Bước chân đầu tiên (First Step)</a>
+              </h3>
+              <p class="mt-2 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 line-clamp-3">
+                Chia sẻ bước đầu xây dựng website tĩnh trên GitHub Pages, giữ mọi thứ thật tinh gọn và tốc độ.
+              </p>
+            </div>
+          </div>
+
+          <div class="px-5 pb-5 pt-3 border-t border-zinc-100 dark:border-zinc-800/60 flex items-center justify-between text-xs text-zinc-500">
+            <span>4 phút đọc</span>
+            <a href="first_step.html" class="font-medium text-amber-600 dark:text-amber-400 hover:underline flex items-center gap-1">
+              Đọc ngay →
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 3: Code gọn gàng -> Knowledge -->
+        <article data-category="knowledge" class="post-card bg-white dark:bg-zinc-900/50 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 overflow-hidden hover:border-zinc-400 dark:hover:border-zinc-700 transition flex flex-col justify-between">
+          <div>
+            <div class="aspect-[16/10] overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+              <img
+                src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80"
+                alt="Code gọn gàng"
+                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80'"
+              />
+            </div>
+            <div class="p-5">
+              <span class="text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider block mb-1.5">
+                Knowledge
+              </span>
+              <h3 class="font-serif text-lg font-bold text-zinc-900 dark:text-zinc-100 line-clamp-2 leading-snug">
+                Nghệ thuật của những dòng code gọn gàng
+              </h3>
+              <p class="mt-2 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 line-clamp-3">
+                Viết code không chỉ để máy tính hiểu, mà quan trọng hơn là để đồng nghiệp và chính mình 6 tháng sau vẫn mỉm cười khi đọc lại.
+              </p>
+            </div>
+          </div>
+
+          <div class="px-5 pb-5 pt-3 border-t border-zinc-100 dark:border-zinc-800/60 flex items-center justify-between text-xs text-zinc-500">
+            <span>5 phút đọc</span>
+            <button onclick="previewContent('Nghệ thuật của những dòng code gọn gàng', 'Một đoạn code được viết một lần nhưng được đọc lại hàng chục lần. Đầu tư thời gian vào việc đặt tên biến chính xác, tách hàm đơn nhiệm và loại bỏ những phần trừu tượng không cần thiết luôn là khoản đầu tư sinh lời cao nhất trong kỹ thuật phần mềm.')" class="font-medium text-zinc-700 dark:text-zinc-300 hover:underline">
+              Xem tóm tắt
+            </button>
+          </div>
+        </article>
+
+        <!-- Card 4: Sport -->
+        <article data-category="sport" class="post-card bg-white dark:bg-zinc-900/50 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 overflow-hidden hover:border-zinc-400 dark:hover:border-zinc-700 transition flex flex-col justify-between">
+          <div>
+            <div class="aspect-[16/10] overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+              <img
+                src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80"
+                alt="Thể thao và kỷ luật"
+                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80'"
+              />
+            </div>
+            <div class="p-5">
+              <span class="text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider block mb-1.5">
+                Sport
+              </span>
+              <h3 class="font-serif text-lg font-bold text-zinc-900 dark:text-zinc-100 line-clamp-2 leading-snug">
+                Sức mạnh của kỷ luật thể thao và năng lượng bền bỉ
+              </h3>
+              <p class="mt-2 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 line-clamp-3">
+                Rèn luyện thể lực và duy trì thói quen vận động mỗi ngày giúp giải tỏa áp lực, tái tạo sự tập trung cao độ khi giải quyết các vấn đề phức tạp.
+              </p>
+            </div>
+          </div>
+
+          <div class="px-5 pb-5 pt-3 border-t border-zinc-100 dark:border-zinc-800/60 flex items-center justify-between text-xs text-zinc-500">
+            <span>3 phút đọc</span>
+            <button onclick="previewContent('Sức mạnh của kỷ luật thể thao và năng lượng bền bỉ', 'Việc rèn luyện thể thao hàng ngày rèn luyện cho ta tính kiên định và ý chí không bỏ cuộc. Đó là nền tảng thể chất vững chắc để theo đuổi đam mê kỹ thuật đường dài.')" class="font-medium text-zinc-700 dark:text-zinc-300 hover:underline">
+              Xem tóm tắt
+            </button>
+          </div>
+        </article>
+
+        <!-- Card 5: Knowledge -->
+        <article data-category="knowledge" class="post-card bg-white dark:bg-zinc-900/50 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 overflow-hidden hover:border-zinc-400 dark:hover:border-zinc-700 transition flex flex-col justify-between">
+          <div>
+            <div class="aspect-[16/10] overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+              <img
+                src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=600&q=80"
+                alt="Kiến thức web tĩnh"
+                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                onerror="this.src='https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=800&q=80'"
+              />
+            </div>
+            <div class="p-5">
+              <span class="text-[11px] font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider block mb-1.5">
+                Knowledge
+              </span>
+              <h3 class="font-serif text-lg font-bold text-zinc-900 dark:text-zinc-100 line-clamp-2 leading-snug">
+                Xây dựng blog tĩnh: Sự tự do của người lập trình
+              </h3>
+              <p class="mt-2 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 line-clamp-3">
+                Không database cồng kềnh, không máy chủ phức tạp. Chỉ có HTML, CSS và nội dung thuần túy tồn tại bền bỉ qua năm tháng.
+              </p>
+            </div>
+          </div>
+
+          <div class="px-5 pb-5 pt-3 border-t border-zinc-100 dark:border-zinc-800/60 flex items-center justify-between text-xs text-zinc-500">
+            <span>6 phút đọc</span>
+            <button onclick="previewContent('Xây dựng blog tĩnh: Sự tự do của người lập trình', 'Một trang web tĩnh trên GitHub Pages mang lại sự an tâm tuyệt đối: chi phí lưu trữ bằng không, thời gian phản hồi miligiây và quyền sở hữu mã nguồn trọn vẹn.')" class="font-medium text-zinc-700 dark:text-zinc-300 hover:underline">
+              Xem tóm tắt
+            </button>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Trạng thái không tìm thấy kết quả -->
+      <div id="noResultsBox" class="hidden text-center py-16 px-4 rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-800 my-6">
+        <svg class="w-10 h-10 mx-auto text-zinc-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8" stroke-width="2"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2"></line>
+        </svg>
+        <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">Không tìm thấy bài viết phù hợp</p>
+        <p class="text-xs text-zinc-400 mt-1">Hãy thử tìm với từ khóa khác hoặc bấm chọn 'Tất cả'.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== 3. MODAL XEM TÓM TẮT ==================== -->
+  <div id="previewModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm">
+    <div class="bg-white dark:bg-zinc-900 w-full max-w-lg rounded-2xl shadow-xl border border-zinc-200 dark:border-zinc-800 p-6 relative">
+      <div class="flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800">
+        <h4 class="font-serif text-base font-bold text-zinc-900 dark:text-zinc-100" id="modalTitle">Tiêu đề bài viết</h4>
+        <button onclick="closeModal()" class="p-1 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <line x1="18" y1="6" x2="6" y2="18" stroke-width="2"></line>
+            <line x1="6" y1="6" x2="18" y2="18" stroke-width="2"></line>
+          </svg>
+        </button>
+      </div>
+      <p id="modalBody" class="mt-4 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed font-serif"></p>
+      <div class="mt-6 flex justify-end">
+        <button onclick="closeModal()" class="px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:text-zinc-900 rounded-xl text-xs font-semibold">
+          Đóng
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast thông báo (Thay thế cho alert) -->
+  <div id="toastMessage" class="fixed bottom-6 right-6 z-50 transform translate-y-16 opacity-0 transition-all duration-300 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2">
+    <svg class="w-4 h-4 text-amber-400 dark:text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+    </svg>
+    <span id="toastText">Đã sao chép liên kết vào bộ nhớ tạm!</span>
+  </div>
+
+  <!-- ==================== 4. FOOTER ==================== -->
+  <footer class="border-t border-zinc-200 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-950/60 py-8 text-xs text-zinc-500 transition-colors">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-serif font-bold text-zinc-800 dark:text-zinc-200">KHAZORE</span>
+        <span>—</span>
+        <span>Viết bằng sự tĩnh lặng và đam mê mã nguồn.</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="sine_simulation.html" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition">Mô phỏng sóng Sin</a>
+        <a href="first_step.html" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition">Bài viết đầu tiên</a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== 5. JAVASCRIPT LOGIC ==================== -->
+  <script>
+    // --- Logic Dark Mode ---
+    const htmlElement = document.documentElement;
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const sunIcon = document.getElementById('sunIcon');
+    const moonIcon = document.getElementById('moonIcon');
+
+    let isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(isDark);
+
+    themeToggleBtn.addEventListener('click', () => {
+      isDark = !isDark;
+      applyTheme(isDark);
+    });
+
+    function applyTheme(dark) {
+      if (dark) {
+        htmlElement.classList.add('dark');
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+      } else {
+        htmlElement.classList.remove('dark');
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+      }
+    }
+
+    // --- Logic Bộ lọc & Tìm kiếm bài viết ---
+    const searchInput = document.getElementById('searchInput');
+    const mobileSearchInput = document.getElementById('mobileSearchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    const categoryButtons = document.querySelectorAll('.cat-btn');
+    const postCards = document.querySelectorAll('.post-card');
+    const noResultsBox = document.getElementById('noResultsBox');
+    const articleCount = document.getElementById('articleCount');
+
+    let currentCategory = 'all';
+    let currentQuery = '';
+
+    function filterPosts() {
+      let visibleCount = 0;
+
+      postCards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const textContent = card.innerText.toLowerCase();
+        
+        const matchesCategory = (currentCategory === 'all' || category === currentCategory);
+        const matchesSearch = textContent.includes(currentQuery.toLowerCase());
+
+        if (matchesCategory && matchesSearch) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      articleCount.textContent = `${visibleCount} bài viết`;
+      if (visibleCount === 0) {
+        noResultsBox.classList.remove('hidden');
+      } else {
+        noResultsBox.classList.add('hidden');
+      }
+    }
+
+    // Sự kiện tìm kiếm
+    function handleSearchInput(e) {
+      currentQuery = e.target.value.trim();
+      if (currentQuery) {
+        clearSearchBtn.classList.remove('hidden');
+      } else {
+        clearSearchBtn.classList.add('hidden');
+      }
+      searchInput.value = currentQuery;
+      mobileSearchInput.value = currentQuery;
+      filterPosts();
+    }
+
+    searchInput.addEventListener('input', handleSearchInput);
+    mobileSearchInput.addEventListener('input', handleSearchInput);
+
+    clearSearchBtn.addEventListener('click', () => {
+      currentQuery = '';
+      searchInput.value = '';
+      mobileSearchInput.value = '';
+      clearSearchBtn.classList.add('hidden');
+      filterPosts();
+    });
+
+    // Sự kiện chọn danh mục
+    categoryButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentCategory = btn.getAttribute('data-cat');
+        
+        categoryButtons.forEach(b => {
+          b.className = 'cat-btn shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition';
+        });
+        btn.className = 'cat-btn shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 transition';
+
+        filterPosts();
+      });
+    });
+
+    // --- Modal Xem nhanh tóm tắt ---
+    const modal = document.getElementById('previewModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalBody = document.getElementById('modalBody');
+
+    function previewContent(title, content) {
+      modalTitle.textContent = title;
+      modalBody.textContent = content;
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+    }
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // --- Sao chép liên kết ---
+    function copyPageUrl(relativeUrl) {
+      const fullUrl = window.location.origin + window.location.pathname.replace('index.html', '') + relativeUrl;
+      
+      const tempInput = document.createElement('input');
+      tempInput.value = fullUrl;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+
+      showToast('Đã sao chép đường dẫn: ' + relativeUrl);
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toastMessage');
+      const toastText = document.getElementById('toastText');
+      toastText.textContent = message;
+
+      toast.classList.remove('translate-y-16', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-16', 'opacity-0');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
