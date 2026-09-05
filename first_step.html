@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The First Step: Bước chân đầu tiên — KHAZORE</title>
+
+  <!-- Phông chữ Google Fonts (Inter & Playfair Display) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Thanh cuộn tối giản */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #a1a1aa;
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #3f3f46;
+    }
+  </style>
+</head>
+
+<body class="bg-[#fafaf9] text-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 transition-colors duration-300 font-sans min-h-screen flex flex-col justify-between selection:bg-amber-100 selection:text-amber-900 dark:selection:bg-amber-900/40 dark:selection:text-amber-200">
+
+  <!-- Thanh đo tiến độ đọc bài viết (Reading Progress Bar) -->
+  <div id="readingProgress" class="fixed top-0 left-0 h-[3px] bg-amber-600 z-50 transition-all duration-150" style="width: 0%;"></div>
+
+  <!-- ==================== 1. HEADER ==================== -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-zinc-950/80 border-b border-zinc-200/80 dark:border-zinc-800/80 transition-colors">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Nút quay lại trang chủ -->
+      <a href="index.html" class="inline-flex items-center gap-2 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors group">
+        <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        <span>Về trang chủ KHAZORE</span>
+      </a>
+
+      <!-- Tiện ích bên phải -->
+      <div class="flex items-center gap-2">
+        <!-- Sao chép link bài viết -->
+        <button
+          onclick="copyCurrentUrl()"
+          aria-label="Chia sẻ bài viết"
+          title="Sao chép liên kết bài viết"
+          class="p-2 rounded-xl text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+          </svg>
+        </button>
+
+        <!-- Chuyển đổi Dark/Light mode -->
+        <button
+          id="themeToggleBtn"
+          aria-label="Đổi giao diện Sáng / Tối"
+          class="p-2 rounded-xl text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition"
+        >
+          <svg id="sunIcon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" stroke-width="2"></circle>
+            <path stroke-width="2" d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+          </svg>
+          <svg id="moonIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-width="2" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==================== 2. NỘI DUNG BÀI VIẾT ==================== -->
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16 flex-1 w-full">
+    
+    <!-- Meta thông tin bài viết -->
+    <div class="flex flex-wrap items-center gap-2.5 mb-6 text-xs font-medium">
+      <span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 font-semibold uppercase tracking-wider text-[10px]">
+        Work
+      </span>
+      <span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 font-semibold uppercase tracking-wider text-[10px]">
+        Sport
+      </span>
+      <span class="px-2.5 py-1 rounded-full bg-sky-100 text-sky-800 dark:bg-sky-950/60 dark:text-sky-300 font-semibold uppercase tracking-wider text-[10px]">
+        Knowledge
+      </span>
+      <span class="text-zinc-300 dark:text-zinc-700">•</span>
+      <span class="text-zinc-400">Tháng 9, 2026</span>
+      <span class="text-zinc-300 dark:text-zinc-700">•</span>
+      <span class="text-zinc-400">2 phút đọc</span>
+    </div>
+
+    <!-- Tiêu đề lớn -->
+    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 leading-[1.2] mb-6">
+      The First Step: Chào mừng bạn đến với góc nhỏ của tôi
+    </h1>
+
+    <!-- Thông tin tác giả tinh gọn -->
+    <div class="flex items-center gap-3 py-4 border-y border-zinc-200/70 dark:border-zinc-800/70 mb-10 text-xs text-zinc-500">
+      <div class="w-9 h-9 rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 flex items-center justify-center font-serif font-bold text-sm">
+        K
+      </div>
+      <div>
+        <div class="font-semibold text-zinc-800 dark:text-zinc-200">Khazore</div>
+        <div class="text-[11px] text-zinc-400">Viết về công nghệ, mã nguồn và những dặm chạy</div>
+      </div>
+    </div>
+
+    <!-- Thân bài viết -->
+    <article class="space-y-6 text-base sm:text-lg leading-relaxed text-zinc-700 dark:text-zinc-300 font-serif">
+      
+      <!-- Đoạn mở đầu -->
+      <p class="first-letter:text-5xl first-letter:font-bold first-letter:font-serif first-letter:mr-3 first-letter:float-left first-letter:text-amber-600 dark:first-letter:text-amber-500">
+        Đây là nơi để tôi có thể viết những thứ linh ta linh tinh của mình. Một góc nhỏ bình yên giữa không gian internet rộng lớn, nơi không bị gò bó bởi thuật toán hay áp lực mạng xã hội, chỉ đơn giản là trải lòng qua những con chữ và dòng code.
+      </p>
+
+      <p>
+        Đó có thể là câu chuyện trong công việc, những trải nghiệm thể thao mỗi sớm mai, hay những kiến thức và bài học kinh nghiệm tôi tích lũy được sau những lần thử nghiệm sai rồi sửa.
+      </p>
+
+      <!-- Khối các chủ đề quan tâm (Cards tối giản) -->
+      <div class="my-8 pt-2 font-sans not-italic">
+        <h3 class="font-serif text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-4">
+          Những thứ tôi đặc biệt quan tâm
+        </h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+          <!-- Card Kỹ thuật -->
+          <div class="p-5 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800/80">
+            <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mb-3">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+              </svg>
+            </div>
+            <h4 class="font-semibold text-zinc-900 dark:text-zinc-100 mb-1.5">Công nghệ &amp; Kỹ thuật</h4>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              Thế giới phần cứng với <strong>Vi điều khiển</strong>, sự phát triển đột phá của <strong>AI</strong>, và tính chuẩn xác, kỷ luật trong quy trình <strong>Testing</strong> để tạo nên những sản phẩm tin cậy.
+            </p>
+          </div>
+
+          <!-- Card Thể thao -->
+          <div class="p-5 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200/80 dark:border-zinc-800/80">
+            <div class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-3">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <h4 class="font-semibold text-zinc-900 dark:text-zinc-100 mb-1.5">Vận động &amp; Khám phá</h4>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+              Những buổi <strong>chạy bộ</strong> rèn luyện ý chí, những cung đường <strong>leo núi</strong> và <strong>chạy trail</strong> băng qua rừng sâu — nơi thể lực và sự kiên định cùng được thử thách.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trích dẫn tâm sự về blog cũ -->
+      <blockquote class="my-8 pl-5 border-l-2 border-amber-600 dark:border-amber-500 italic text-zinc-600 dark:text-zinc-400">
+        “Trước đây tôi cũng từng có một trang blog nhưng không xịn xò như thế này...”
+      </blockquote>
+
+      <p>
+        Nhìn lại phiên bản trước kia, dù mộc mạc và còn nhiều thiếu sót, nhưng chính nó đã gieo cho tôi thói quen ghi chép và trân trọng từng suy nghĩ của mình. Giờ đây, khi dựng lại không gian này trên nền tảng web tĩnh gọn gàng của GitHub Pages, tôi cảm thấy hào hứng hơn bao giờ hết.
+      </p>
+
+      <p class="pt-2 font-medium text-zinc-900 dark:text-zinc-100">
+        ... và đây là những dòng đầu tiên của tôi. Cảm ơn mọi người đã ghé thăm và dành thời gian đọc! :)
+      </p>
+
+    </article>
+
+    <!-- Khối kết bài & Chữ ký -->
+    <div class="mt-12 pt-8 border-t border-zinc-200/80 dark:border-zinc-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-sans text-xs">
+      <div class="text-zinc-500">
+        Đăng tải tại <strong class="text-zinc-800 dark:text-zinc-200">KHAZORE</strong> • Mã nguồn tĩnh trên GitHub
+      </div>
+      <div class="flex items-center gap-3">
+        <button
+          onclick="copyCurrentUrl()"
+          class="px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+        >
+          Sao chép link bài
+        </button>
+        <a
+          href="index.html"
+          class="px-3.5 py-1.5 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-medium hover:bg-zinc-800 dark:hover:bg-white transition"
+        >
+          ← Quay lại danh sách
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== 3. TOAST THÔNG BÁO ==================== -->
+  <div id="toastMessage" class="fixed bottom-6 right-6 z-50 transform translate-y-16 opacity-0 transition-all duration-300 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2">
+    <svg class="w-4 h-4 text-amber-400 dark:text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+    </svg>
+    <span id="toastText">Đã sao chép liên kết vào bộ nhớ tạm!</span>
+  </div>
+
+  <!-- ==================== 4. FOOTER ==================== -->
+  <footer class="border-t border-zinc-200 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-950/60 py-8 text-xs text-zinc-500 transition-colors">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-serif font-bold text-zinc-800 dark:text-zinc-200">KHAZORE</span>
+        <span>—</span>
+        <span>Viết bằng sự tĩnh lặng và đam mê mã nguồn.</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="index.html" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition">Trang chủ</a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== 5. JAVASCRIPT ==================== -->
+  <script>
+    // --- Dark Mode ---
+    const htmlElement = document.documentElement;
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const sunIcon = document.getElementById('sunIcon');
+    const moonIcon = document.getElementById('moonIcon');
+
+    let isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(isDark);
+
+    themeToggleBtn.addEventListener('click', () => {
+      isDark = !isDark;
+      applyTheme(isDark);
+    });
+
+    function applyTheme(dark) {
+      if (dark) {
+        htmlElement.classList.add('dark');
+        sunIcon.classList.remove('hidden');
+        moonIcon.classList.add('hidden');
+      } else {
+        htmlElement.classList.remove('dark');
+        sunIcon.classList.add('hidden');
+        moonIcon.classList.remove('hidden');
+      }
+    }
+
+    // --- Thanh tiến độ cuộn trang (Reading Progress Bar) ---
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const progressPercent = (scrollTop / scrollHeight) * 100;
+      document.getElementById('readingProgress').style.width = progressPercent + '%';
+    });
+
+    // --- Sao chép đường dẫn bài viết ---
+    function copyCurrentUrl() {
+      const tempInput = document.createElement('input');
+      tempInput.value = window.location.href;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+
+      showToast('Đã sao chép liên kết bài viết!');
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toastMessage');
+      const toastText = document.getElementById('toastText');
+      toastText.textContent = message;
+
+      toast.classList.remove('translate-y-16', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-16', 'opacity-0');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
