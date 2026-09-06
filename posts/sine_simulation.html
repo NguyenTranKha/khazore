@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mô Phỏng Sóng Hình Sin: Vũ Điệu Của Toán Học &amp; Tín Hiệu — KHAZORE</title>
+
+  <!-- Phông chữ Google Fonts (Inter & Playfair Display) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+
+  <!-- KaTeX CSS & JS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  <script src="../shared-theme.js"></script>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            brand: {
+              50: '#faf8f5',
+              500: '#d97706',
+              600: '#b45309',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Thanh cuộn tối giản */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #a1a1aa;
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #3f3f46;
+    }
+  </style>
+</head>
+
+<body class="bg-[#fafaf9] text-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 transition-colors duration-300 font-sans min-h-screen flex flex-col justify-between selection:bg-amber-100 selection:text-amber-900 dark:selection:bg-amber-900/40 dark:selection:text-amber-200">
+
+  <!-- Thanh đo tiến độ đọc trang -->
+  <div id="readingProgress" class="fixed top-0 left-0 h-[3px] bg-amber-600 z-50 transition-all duration-150" style="width: 0%;"></div>
+
+  <!-- ==================== 1. THANH HEADER ĐIỀU HƯỚNG ==================== -->
+  <header class="sticky top-0 z-40 backdrop-blur-md bg-white/85 dark:bg-zinc-950/85 border-b border-zinc-200/80 dark:border-zinc-800/80 transition-colors">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Nút quay về trang chủ -->
+      <a href="../index.html" class="inline-flex items-center gap-2 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors group">
+        <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        <span>Về trang chủ KHAZORE</span>
+      </a>
+
+      <!-- Tiện ích bên phải -->
+      <div class="flex items-center gap-2">
+        <!-- Sao chép liên kết -->
+        <button
+          onclick="copyCurrentUrl()"
+          aria-label="Chia sẻ bài viết"
+          title="Sao chép liên kết bài viết"
+          class="p-2 rounded-xl text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+          </svg>
+        </button>
+
+        <!-- Chuyển đổi Dark / Light Theme -->
+        <button
+          id="themeToggleBtn"
+          aria-label="Đổi giao diện Sáng / Tối"
+          class="p-2 rounded-xl text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-900 transition"
+        >
+          <svg id="sunIcon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="5" stroke-width="2"></circle>
+            <path stroke-width="2" d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+          </svg>
+          <svg id="moonIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-width="2" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==================== 2. THÂN BÀI VIẾT ==================== -->
+  <main class="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16 flex-1 w-full">
+    
+    <!-- Huy hiệu & Thông tin đăng bài -->
+    <div class="flex items-center gap-2.5 mb-6 text-xs font-medium">
+      <span class="px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 font-semibold uppercase tracking-wider text-[10px]">
+        Knowledge
+      </span>
+      <span class="text-zinc-300 dark:text-zinc-700">•</span>
+      <span class="text-zinc-400">Tháng 9, 2026</span>
+      <span class="text-zinc-300 dark:text-zinc-700">•</span>
+      <span class="text-zinc-400">6 phút đọc</span>
+    </div>
+
+    <!-- Tiêu đề bài viết -->
+    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 leading-[1.2] mb-6">
+      Sóng hình Sin: Vũ điệu toán học và nhịp đập của tín hiệu tuần hoàn
+    </h1>
+
+    <!-- Thông tin tác giả -->
+    <div class="flex items-center gap-3 py-4 border-y border-zinc-200/70 dark:border-zinc-800/70 mb-10 text-xs text-zinc-500">
+      <div class="w-9 h-9 rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 flex items-center justify-center font-serif font-bold text-sm">
+        K
+      </div>
+      <div>
+        <div class="font-semibold text-zinc-800 dark:text-zinc-200">Khazore</div>
+        <div class="text-[11px] text-zinc-400">Tối ưu mã nguồn, toán ứng dụng &amp; phần cứng nhúng</div>
+      </div>
+    </div>
+
+    <!-- Nội dung chuyên sâu -->
+    <article class="space-y-6 text-base sm:text-lg leading-relaxed text-zinc-700 dark:text-zinc-300 font-serif">
+      
+      <p class="first-letter:text-5xl first-letter:font-bold first-letter:font-serif first-letter:mr-3 first-letter:float-left first-letter:text-amber-600 dark:first-letter:text-amber-500">
+        Nếu phải chọn một đường cong đại diện cho sự hài hòa tuyệt đối của vũ trụ, đó chắc chắn là sóng hình Sin. Từ sự co bóp tuần hoàn của cơ tim, dao động của con lắc đồng hồ, âm thanh thanh thoát của một chiếc âm thoa cho đến sóng điện từ truyền tải dữ liệu đi khắp bán cầu — tất cả đều tuân theo quy luật dao động điều hòa này.
+      </p>
+
+      <p>
+        Sự thanh lịch của sóng sin nằm ở chỗ: <strong>nó là hình chiếu tuyến tính theo thời gian của một chuyển động tròn đều</strong>. Khi một chất điểm quay đều trên một đường tròn, hình chiếu của nó lên trục thẳng đứng sẽ vẽ nên một đường lượn sóng mềm mại bất tận.
+      </p>
+
+      <!-- Khối công thức chuẩn định dạng Toán học & Vật lý -->
+      <div class="my-8 p-6 sm:p-8 rounded-2xl bg-zinc-100/90 dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 text-center font-sans">
+        <div class="text-xs uppercase tracking-widest text-zinc-400 font-semibold mb-3">
+          Phương trình dao động điều hòa tổng quát
+        </div>
+        
+        <!-- Công thức chính rendered qua KaTeX -->
+        <div class="text-xl sm:text-2xl font-medium text-amber-600 dark:text-amber-400 py-1">
+          $$y(t) = A\sin(\omega t + \varphi)$$
+        </div>
+
+        <!-- Mối liên hệ chu kỳ và tần số -->
+        <div class="mt-3 pt-3 border-t border-zinc-200/60 dark:border-zinc-800/80 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400">
+          $$\text{trong đó: } \omega = 2\pi f = \frac{2\pi}{T}$$
+        </div>
+      </div>
+
+      <!-- Danh mục các thông số chuẩn toán học -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-sans not-italic my-6">
+        <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
+          <div class="font-bold text-zinc-900 dark:text-zinc-100 flex items-center justify-between">
+            <span>Biên độ dao động</span>
+            <span class="text-amber-600 dark:text-amber-400 font-mono">$A > 0$</span>
+          </div>
+          <p class="text-zinc-500 dark:text-zinc-400 text-[11px] leading-relaxed">
+            Độ lệch cực đại của li độ so với vị trí cân bằng (đơn vị: $\text{m}, \text{cm}$ hoặc $\text{pixel}$).
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
+          <div class="font-bold text-zinc-900 dark:text-zinc-100 flex items-center justify-between">
+            <span>Tần số góc</span>
+            <span class="text-amber-600 dark:text-amber-400 font-mono">$\omega > 0$</span>
+          </div>
+          <p class="text-zinc-500 dark:text-zinc-400 text-[11px] leading-relaxed">
+            Tốc độ biến thiên góc pha theo thời gian, đo bằng radian trên giây ($\text{rad/s}$).
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
+          <div class="font-bold text-zinc-900 dark:text-zinc-100 flex items-center justify-between">
+            <span>Chu kỳ &amp; Tần số</span>
+            <span class="text-amber-600 dark:text-amber-400 font-mono">$T = \frac{1}{f}$</span>
+          </div>
+          <p class="text-zinc-500 dark:text-zinc-400 text-[11px] leading-relaxed">
+            Khoảng thời gian thực hiện một dao động toàn phần $T$ ($\text{s}$) và số dao động trong một giây $f$ ($\text{Hz}$).
+          </p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 space-y-1">
+          <div class="font-bold text-zinc-900 dark:text-zinc-100 flex items-center justify-between">
+            <span>Pha ban đầu &amp; Pha dao động</span>
+            <span class="text-amber-600 dark:text-amber-400 font-mono">$(\omega t + \varphi)$</span>
+          </div>
+          <p class="text-zinc-500 dark:text-zinc-400 text-[11px] leading-relaxed">
+            $\varphi \in (-\pi, \pi]$ là pha tại $t = 0$; $(\omega t + \varphi)$ xác định trạng thái dao động ở thời điểm $t$.
+          </p>
+        </div>
+      </div>
+
+      <!-- ==================== 3. KHỐI MÔ PHỎNG TƯƠNG TÁC (CANVAS DUAL VIEW) ==================== -->
+      <div class="my-10 p-5 sm:p-7 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800/80 shadow-sm font-sans not-italic">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 border-b border-zinc-100 dark:border-zinc-800 pb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+              <h3 class="font-serif font-bold text-lg text-zinc-900 dark:text-zinc-100">
+                Mô phỏng: Vòng tròn lượng giác &amp; Sóng lan truyền
+              </h3>
+            </div>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+              Quan sát trực quan vectơ quay trên đường tròn đơn vị trực tiếp tạo ra sóng sin theo thời gian.
+            </p>
+          </div>
+
+          <!-- Nút Tạm dừng / Tiếp tục -->
+          <button
+            id="playPauseBtn"
+            class="self-start sm:self-auto inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 hover:opacity-90 transition shadow-sm"
+          >
+            <svg id="pauseIcon" class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+              <rect x="6" y="4" width="4" height="16"></rect>
+              <rect x="14" y="4" width="4" height="16"></rect>
+            </svg>
+            <svg id="playIcon" class="w-3.5 h-3.5 hidden" fill="currentColor" viewBox="0 0 24 24">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span id="playPauseText">Tạm dừng</span>
+          </button>
+        </div>
+
+        <!-- Khung vẽ Canvas Responsive -->
+        <div class="w-full h-64 sm:h-72 bg-zinc-950 rounded-xl overflow-hidden relative border border-zinc-800 shadow-inner">
+          <canvas id="sineSimulationCanvas" class="w-full h-full block cursor-crosshair"></canvas>
+          <div class="absolute bottom-2.5 left-3 text-[10px] text-zinc-500 font-mono pointer-events-none">
+            Vectơ quay (Phasor) ➔ Dao động hình Sin
+          </div>
+        </div>
+
+        <!-- Bảng điều khiển tham số (Sliders) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6 text-xs">
+          
+          <!-- Slider Biên độ -->
+          <div class="p-3.5 bg-zinc-50 dark:bg-zinc-800/40 rounded-xl border border-zinc-200/70 dark:border-zinc-700/60">
+            <div class="flex justify-between items-center text-zinc-600 dark:text-zinc-400 mb-2 font-medium">
+              <span>Biên độ ($A$):</span>
+              <span id="labelAmp" class="font-mono text-amber-600 dark:text-amber-400 font-bold">55 px</span>
+            </div>
+            <input id="sliderAmp" type="range" min="20" max="85" value="55" class="w-full accent-amber-600 cursor-pointer" />
+          </div>
+
+          <!-- Slider Tần số -->
+          <div class="p-3.5 bg-zinc-50 dark:bg-zinc-800/40 rounded-xl border border-zinc-200/70 dark:border-zinc-700/60">
+            <div class="flex justify-between items-center text-zinc-600 dark:text-zinc-400 mb-2 font-medium">
+              <span>Tần số ($f$):</span>
+              <span id="labelFreq" class="font-mono text-amber-600 dark:text-amber-400 font-bold">0.025 Hz</span>
+            </div>
+            <input id="sliderFreq" type="range" min="0.010" max="0.060" step="0.005" value="0.025" class="w-full accent-amber-600 cursor-pointer" />
+          </div>
+
+          <!-- Slider Tốc độ quay góc -->
+          <div class="p-3.5 bg-zinc-50 dark:bg-zinc-800/40 rounded-xl border border-zinc-200/70 dark:border-zinc-700/60">
+            <div class="flex justify-between items-center text-zinc-600 dark:text-zinc-400 mb-2 font-medium">
+              <span>Tần số góc ($\omega$):</span>
+              <span id="labelSpeed" class="font-mono text-amber-600 dark:text-amber-400 font-bold">0.04 rad/s</span>
+            </div>
+            <input id="sliderSpeed" type="range" min="0.01" max="0.10" step="0.01" value="0.04" class="w-full accent-amber-600 cursor-pointer" />
+          </div>
+
+        </div>
+
+        <!-- Tùy chọn hiển thị -->
+        <div class="flex flex-wrap items-center justify-between gap-3 mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800/70 text-xs">
+          <label class="flex items-center gap-2 cursor-pointer text-zinc-600 dark:text-zinc-400">
+            <input id="checkProjection" type="checkbox" checked class="rounded border-zinc-300 text-amber-600 focus:ring-amber-500" />
+            <span>Hiển thị đường dóng pha từ chất điểm</span>
+          </label>
+          <button
+            id="resetParamsBtn"
+            class="text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition text-[11px] underline underline-offset-2"
+          >
+            Khôi phục mặc định
+          </button>
+        </div>
+
+      </div>
+      <!-- ==================== HẾT KHỐI MÔ PHỎNG ==================== -->
+
+      <h3 class="font-serif text-2xl font-bold text-zinc-900 dark:text-zinc-100 pt-3">
+        Góc nhìn kỹ thuật: Khi mã nguồn cần sự tinh gọn tối thượng
+      </h3>
+
+      <p>
+        Trong lĩnh vực lập trình hệ thống nhúng và <strong>vi điều khiển</strong> (như ARM Cortex-M, STM32, ESP32), việc gọi hàm toán học <code class="font-mono text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-amber-600">sin()</code> trong thư viện tiêu chuẩn <code class="font-mono text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800">math.h</code> là một sự lãng phí tài nguyên to lớn nếu chạy ở tần số ngắt micro-giây.
+      </p>
+
+      <p>
+        Một người kỹ sư đam mê sự tinh gọn sẽ chọn cách tạo sẵn một <strong>Bảng tra cứu (Look-up Table - LUT)</strong> với số lượng mẫu xác định (thường là lũy thừa của 2 như 256 hoặc 1024 điểm để tối ưu phép chia bit shift).
+      </p>
+
+      <!-- Khối mã nguồn mẫu sạch sẽ -->
+      <div class="my-6 rounded-2xl bg-zinc-900 text-zinc-200 p-5 font-mono text-xs overflow-x-auto border border-zinc-800">
+        <div class="text-zinc-500 mb-3 flex items-center justify-between border-b border-zinc-800 pb-2">
+          <span>// C Code: Sinh bảng tra cứu sóng Sin (256 điểm) không dùng số thực lúc chạy</span>
+          <span>sine_lut.c</span>
+        </div>
+<pre class="leading-relaxed"><code><span class="text-emerald-400">#include</span> <span class="text-amber-300">&lt;stdint.h&gt;</span>
+<span class="text-emerald-400">#define</span> SINE_SAMPLES <span class="text-amber-400">256</span>
+
+<span class="text-zinc-500">// Mảng chứa biên độ được lượng tử hóa sang 8-bit (0 - 255)</span>
+<span class="text-amber-300">uint8_t</span> sine_lut[SINE_SAMPLES];
+
+<span class="text-amber-300">void</span> <span class="text-sky-400">init_sine_table</span>(<span class="text-amber-300">void</span>) {
+    <span class="text-amber-300">for</span> (<span class="text-amber-300">int</span> i = <span class="text-amber-400">0</span>; i &lt; SINE_SAMPLES; i++) {
+        <span class="text-zinc-500">// y = 128 + 127 * sin(2 * PI * i / 256)</span>
+        <span class="text-amber-300">double</span> rad = (<span class="text-amber-400">2.0</span> * <span class="text-amber-400">3.1415926535</span> * i) / SINE_SAMPLES;
+        sine_lut[i] = (<span class="text-amber-300">uint8_t</span>)(<span class="text-amber-400">128</span> + <span class="text-amber-400">127</span> * sin(rad));
+    }
+}</code></pre>
+      </div>
+
+      <p>
+        Khi ngắt Timer kích hoạt, vi điều khiển chỉ cần lấy <code class="font-mono text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-amber-600">sine_lut[index++]</code> và nạp vào bộ điều chế độ rộng xung (PWM) để xuất tín hiệu SPWM mịn màng điều khiển biến tần hoặc động cơ không chổi than (BLDC).
+      </p>
+
+      <blockquote class="my-6 pl-5 border-l-2 border-amber-600 dark:border-amber-500 italic text-zinc-600 dark:text-zinc-400">
+        “Viết những dòng code rõ ràng, tính toán trước những gì có thể tính toán và giữ cho vòng lặp thực thi nhẹ tựa lông hồng — đó là vẻ đẹp tối thượng của nghệ thuật lập trình.”
+      </blockquote>
+
+      <p>
+        Không dừng lại ở phần cứng, trong kiến trúc <strong>Transformer của Trí tuệ Nhân tạo (AI)</strong>, sóng Sin và Cosin ở nhiều tần số khác nhau cũng được kết hợp để mã hóa vị trí các từ (Positional Encoding), giúp mô hình hiểu được ngữ cảnh trước sau mà không cần xử lý tuần tự từng từ như RNN ngày trước.
+      </p>
+
+      <p class="pt-2 font-medium text-zinc-900 dark:text-zinc-100">
+        Từ công thức giấy trắng đến những nhịp sóng thời gian thực trên màn hình, vẻ đẹp của toán học luôn hiện diện nếu ta chịu dừng lại quan sát. Cảm ơn bạn đã đồng hành cùng góc nhìn này tại Khazore! :)
+      </p>
+
+    </article>
+
+    <!-- Khối kết bài & Chữ ký -->
+    <div class="mt-12 pt-8 border-t border-zinc-200/80 dark:border-zinc-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-sans text-xs">
+      <div class="text-zinc-500">
+        Đăng tải tại <strong class="text-zinc-800 dark:text-zinc-200">KHAZORE</strong> • Chủ đề Knowledge
+      </div>
+      <div class="flex items-center gap-3">
+        <button
+          onclick="copyCurrentUrl()"
+          class="px-3.5 py-1.5 rounded-xl border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+        >
+          Sao chép liên kết
+        </button>
+        <a
+          href="../index.html"
+          class="px-4 py-1.5 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-950 font-medium hover:bg-zinc-800 dark:hover:bg-white transition shadow-sm"
+        >
+          ← Quay lại trang chủ
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ==================== 4. TOAST THÔNG BÁO ==================== -->
+  <div id="toastMessage" class="fixed bottom-6 right-6 z-50 transform translate-y-16 opacity-0 transition-all duration-300 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2">
+    <svg class="w-4 h-4 text-amber-400 dark:text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path>
+    </svg>
+    <span id="toastText">Đã sao chép liên kết bài viết!</span>
+  </div>
+
+  <!-- ==================== 5. FOOTER ==================== -->
+  <footer class="border-t border-zinc-200 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-950/60 py-8 text-xs text-zinc-500 transition-colors">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="font-serif font-bold text-zinc-800 dark:text-zinc-200">KHAZORE</span>
+        <span>—</span>
+        <span>Ghi chép về công nghệ, thể thao và triết lý sống tinh giản.</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="../index.html" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition">Trang chủ</a>
+        <a href="first_step.html" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition">Bài viết đầu tiên</a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== 6. JAVASCRIPT & MÔ PHỎNG SÓNG SIN ==================== -->
+  <script>
+
+    // --- 2. Thanh đo tiến độ đọc trang ---
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const progressPercent = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      document.getElementById('readingProgress').style.width = progressPercent + '%';
+    });
+
+    // --- 3. Sao chép liên kết bài viết ---
+    function copyCurrentUrl() {
+      const tempInput = document.createElement('input');
+      tempInput.value = window.location.href;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+
+      showToast('Đã sao chép liên kết bài viết vào bộ nhớ tạm!');
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toastMessage');
+      const toastText = document.getElementById('toastText');
+      toastText.textContent = message;
+
+      toast.classList.remove('translate-y-16', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-16', 'opacity-0');
+      }, 3000);
+    }
+
+    // --- 4. BỘ MÔ PHỎNG DUAL SINE SIMULATION (CANVAS) ---
+    const canvas = document.getElementById('sineSimulationCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Các phần tử điều khiển UI
+    const sliderAmp = document.getElementById('sliderAmp');
+    const sliderFreq = document.getElementById('sliderFreq');
+    const sliderSpeed = document.getElementById('sliderSpeed');
+    const labelAmp = document.getElementById('labelAmp');
+    const labelFreq = document.getElementById('labelFreq');
+    const labelSpeed = document.getElementById('labelSpeed');
+    const checkProjection = document.getElementById('checkProjection');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const playPauseText = document.getElementById('playPauseText');
+    const pauseIcon = document.getElementById('pauseIcon');
+    const playIcon = document.getElementById('playIcon');
+    const resetParamsBtn = document.getElementById('resetParamsBtn');
+
+    // Trạng thái mô phỏng
+    const sim = {
+      amplitude: parseFloat(sliderAmp.value),
+      frequency: parseFloat(sliderFreq.value),
+      speed: parseFloat(sliderSpeed.value),
+      phase: 0,
+      isRunning: true,
+      showProjection: true
+    };
+
+    // Lắng nghe sự kiện tương tác
+    sliderAmp.addEventListener('input', (e) => {
+      sim.amplitude = parseFloat(e.target.value);
+      labelAmp.textContent = sim.amplitude + ' px';
+    });
+
+    sliderFreq.addEventListener('input', (e) => {
+      sim.frequency = parseFloat(e.target.value);
+      labelFreq.textContent = sim.frequency.toFixed(3) + ' Hz';
+    });
+
+    sliderSpeed.addEventListener('input', (e) => {
+      sim.speed = parseFloat(e.target.value);
+      labelSpeed.textContent = sim.speed.toFixed(2) + ' rad/s';
+    });
+
+    checkProjection.addEventListener('change', (e) => {
+      sim.showProjection = e.target.checked;
+    });
+
+    playPauseBtn.addEventListener('click', () => {
+      sim.isRunning = !sim.isRunning;
+      if (sim.isRunning) {
+        playPauseText.textContent = 'Tạm dừng';
+        pauseIcon.classList.remove('hidden');
+        playIcon.classList.add('hidden');
+      } else {
+        playPauseText.textContent = 'Tiếp tục';
+        pauseIcon.classList.add('hidden');
+        playIcon.classList.remove('hidden');
+      }
+    });
+
+    resetParamsBtn.addEventListener('click', () => {
+      sliderAmp.value = 55;
+      sliderFreq.value = 0.025;
+      sliderSpeed.value = 0.04;
+      sim.amplitude = 55;
+      sim.frequency = 0.025;
+      sim.speed = 0.04;
+      labelAmp.textContent = '55 px';
+      labelFreq.textContent = '0.025 Hz';
+      labelSpeed.textContent = '0.04 rad/s';
+      checkProjection.checked = true;
+      sim.showProjection = true;
+    });
+
+    
+
+    // Tự thích ứng kích thước màn hình
+    let canvasWidth = 0;
+    let canvasHeight = 0;
+
+    function handleResize() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+      canvasWidth = rect.width;
+      canvasHeight = rect.height;
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    // Vòng lặp diễn hoạt (Animation Loop)
+    function render() {
+      if (!canvasWidth || !canvasHeight) {
+        handleResize();
+      }
+
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+      const centerY = canvasHeight / 2;
+      
+      const circleRadius = sim.amplitude;
+      const circleCenterX = Math.max(70, Math.min(100, canvasWidth * 0.18));
+      const waveStartX = circleCenterX + circleRadius + 35;
+
+      // 1. Trục tọa độ ngang xuyên suốt
+      ctx.beginPath();
+      ctx.strokeStyle = '#27272a'; // Zinc 800
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.moveTo(10, centerY);
+      ctx.lineTo(canvasWidth - 10, centerY);
+      // Trục đứng của vòng tròn
+      ctx.moveTo(circleCenterX, centerY - circleRadius - 15);
+      ctx.lineTo(circleCenterX, centerY + circleRadius + 15);
+      // Trục đứng bắt đầu sóng
+      ctx.moveTo(waveStartX, centerY - circleRadius - 15);
+      ctx.lineTo(waveStartX, centerY + circleRadius + 15);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // 2. Vẽ vòng tròn đơn vị
+      ctx.beginPath();
+      ctx.strokeStyle = '#3f3f46'; // Zinc 700
+      ctx.lineWidth = 1.5;
+      ctx.arc(circleCenterX, centerY, circleRadius, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // 3. Tính toán vị trí chất điểm trên vòng tròn
+      const pointX = circleCenterX + Math.cos(sim.phase) * circleRadius;
+      const pointY = centerY - Math.sin(sim.phase) * circleRadius;
+
+      // Vẽ bán kính quay (Phasor Vector)
+      ctx.beginPath();
+      ctx.strokeStyle = '#f59e0b'; // Amber 500
+      ctx.lineWidth = 2;
+      ctx.moveTo(circleCenterX, centerY);
+      ctx.lineTo(pointX, pointY);
+      ctx.stroke();
+
+      // Điểm chất điểm trên vòng tròn
+      ctx.beginPath();
+      ctx.fillStyle = '#fbbf24';
+      ctx.arc(pointX, pointY, 4.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 4. Vẽ sóng hình Sin lan truyền
+      ctx.beginPath();
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2.5;
+      ctx.shadowColor = 'rgba(245, 158, 11, 0.45)';
+      ctx.shadowBlur = 8;
+
+      for (let x = waveStartX; x < canvasWidth - 10; x++) {
+        const deltaX = x - waveStartX;
+        const currentY = centerY - Math.sin(deltaX * sim.frequency + sim.phase) * sim.amplitude;
+        if (x === waveStartX) {
+          ctx.moveTo(x, currentY);
+        } else {
+          ctx.lineTo(x, currentY);
+        }
+      }
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Điểm đầu của sóng sin
+      const waveHeadY = centerY - Math.sin(sim.phase) * sim.amplitude;
+      ctx.beginPath();
+      ctx.fillStyle = '#ffffff';
+      ctx.arc(waveStartX, waveHeadY, 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 5. Đường dóng ngang kết nối từ Vòng tròn sang Điểm đầu sóng
+      if (sim.showProjection) {
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.6)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        ctx.moveTo(pointX, pointY);
+        ctx.lineTo(waveStartX, pointY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Cập nhật pha nếu đang chạy
+      if (sim.isRunning) {
+        sim.phase += sim.speed;
+        if (sim.phase > Math.PI * 2000) {
+          sim.phase = 0;
+        }
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    // Khởi tạo animation khi trang đã sẵn sàng
+    window.onload = function() {
+      handleResize();
+      render();
+    };
+    document.addEventListener("DOMContentLoaded", function () {
+      // 1. Tự động chuyển đổi toàn bộ công thức LaTeX ($...$ và $$...$$)
+      if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false }
+          ],
+          throwOnError: false
+        });
+      }
+
+      // 2. Khởi tạo Canvas Mô phỏng Sóng Sin
+      handleResize();
+      render();
+    });
+  </script>
+</body>
+</html>
