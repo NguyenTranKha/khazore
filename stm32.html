@@ -1,0 +1,110 @@
+<article class="max-w-3xl mx-auto px-4 py-10 text-zinc-800 dark:text-zinc-200 font-sans">
+  <!-- Article Header -->
+  <header class="mb-8 border-b border-zinc-200 dark:border-zinc-800 pb-6">
+    <div class="flex items-center gap-2 text-xs font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-2">
+      <span>Lập trình nhúng</span>
+      <span>•</span>
+      <span>Hardware & Firmware</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-serif font-bold text-zinc-900 dark:text-zinc-100 mb-4 leading-tight">
+      STM32F103C8T6 (Blue Pill): Bước Khởi Đầu Chuẩn Cho Lập Trình Nhúng 32-bit
+    </h1>
+    <div class="flex items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400">
+      <time datetime="2026-09-09">09 Tháng 9, 2026</time>
+      <span>•</span>
+      <span>Thời gian đọc: 6 phút</span>
+    </div>
+  </header>
+
+  <!-- Lead Paragraph -->
+  <p class="text-base sm:text-lg text-zinc-600 dark:text-zinc-300 leading-relaxed mb-6 font-serif italic">
+    Nếu bạn đã quen thuộc với các vi điều khiển 8-bit như ATmega328P trên Arduino, việc bước sang thế giới 32-bit với dòng STM32 sẽ mở ra một chân trời hoàn toàn mới về hiệu năng, bộ nhớ và khả năng xử lý ngoại vi.
+  </p>
+
+  <!-- Body Content -->
+  <div class="space-y-6 text-sm sm:text-base leading-relaxed">
+    <h2 class="text-xl font-serif font-bold text-zinc-900 dark:text-zinc-100 mt-8 mb-3">
+      1. Tổng quan về STM32F103C8T6
+    </h2>
+    <p>
+      Mạch <strong>STM32F103C8T6</strong> (thường gọi là bo mạch <em>Blue Pill</em>) là một trong những giải pháp vi điều khiển 32-bit phổ biến và có giá thành tốt nhất trên thị trường. Sử dụng lõi ARM Cortex-M3, chip cung cấp tốc độ vượt trội so với các nền tảng 8-bit truyền thống.
+    </p>
+
+    <!-- Specs Table -->
+    <div class="my-6 overflow-x-auto">
+      <table class="w-full text-left text-xs sm:text-sm border-collapse border border-zinc-200 dark:border-zinc-800">
+        <thead class="bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 font-semibold">
+          <tr>
+            <th class="p-3 border border-zinc-200 dark:border-zinc-800">Thông số</th>
+            <th class="p-3 border border-zinc-200 dark:border-zinc-800">Chi tiết</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-zinc-200 dark:divide-zinc-800">
+          <tr>
+            <td class="p-3 border border-zinc-200 dark:border-zinc-800 font-medium">Lõi xử lý</td>
+            <td class="p-3 border border-zinc-200 dark:border-zinc-800">ARM® 32-bit Cortex®-M3</td>
+          </tr>
+          <tr>
+            <td class="p-3 border border-zinc-200 dark:border-zinc-800 font-medium">Tần số thạch anh</td>
+            <td class="p-3 border border-zinc-200 dark:border-zinc-800">72 MHz (Max)</td>
+          </tr>
+          <tr>
+            <td class="p-3 border border-zinc-200 dark:border-zinc-800 font-medium">Bộ nhớ Flash / RAM</td>
+            <td class="p-3 border border-zinc-200 dark:border-zinc-800">64 KB Flash / 20 KB SRAM</td>
+          </tr>
+          <tr>
+            <td class="p-3 border border-zinc-200 dark:border-zinc-800 font-medium">Ngoại vi giao tiếp</td>
+            <td class="p-3 border border-zinc-200 dark:border-zinc-800">USART, SPI, I2C, USB 2.0 Full-Speed, CAN</td>
+          </tr>
+          <tr>
+            <td class="p-3 border border-zinc-200 dark:border-zinc-800 font-medium">Điện áp hoạt động</td>
+            <td class="p-3 border border-zinc-200 dark:border-zinc-800">2.0V – 3.6V (Chân I/O chịu được 5V)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="text-xl font-serif font-bold text-zinc-900 dark:text-zinc-100 mt-8 mb-3">
+      2. Vì sao nên chọn STM32 thay vì Arduino 8-bit?
+    </h2>
+    <ul class="list-disc pl-5 space-y-2 text-zinc-700 dark:text-zinc-300">
+      <li><strong>Tốc độ xử lý:</strong> Xung nhịp 72 MHz giúp xử lý toán học, thuật toán điều khiển động cơ hoặc lọc tín hiệu nhanh gấp nhiều lần so với Arduino Uno (16 MHz).</li>
+      <li><strong>DMA (Direct Memory Access):</strong> Truyền dữ liệu trực tiếp giữa ngoại vi và bộ nhớ mà không làm tốn tài nguyên CPU.</li>
+      <li><strong>Hệ sinh thái công cụ chuyên nghiệp:</strong> Hỗ trợ tốt các phần mềm công nghiệp như <em>STM32CubeIDE</em>, <em>Keil MDK</em> hoặc cấu hình trực quan qua <em>STM32CubeMX</em>.</li>
+    </ul>
+
+    <h2 class="text-xl font-serif font-bold text-zinc-900 dark:text-zinc-100 mt-8 mb-3">
+      3. Đoạn mã Chớp Tắt LED (Blink) đơn giản với STM32Cube HAL
+    </h2>
+    <p>
+      Ví dụ dưới đây thực hiện đảo trạng thái chân <code>PC13</code> (chân kết nối LED tích hợp trên mạch Blue Pill) mỗi 500ms sử dụng thư viện HAL:
+    </p>
+
+    <!-- Code Block -->
+    <pre class="bg-zinc-900 text-zinc-100 p-4 rounded-xl text-xs sm:text-sm overflow-x-auto font-mono my-4 border border-zinc-800"><code>/* Trong vòng lặp main() */
+while (1)
+{
+  /* Đảo trạng thái chân GPIO PC13 */
+  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+  
+  /* Delay 500ms */
+  HAL_Delay(500);
+}</code></pre>
+
+    <h2 class="text-xl font-serif font-bold text-zinc-900 dark:text-zinc-100 mt-8 mb-3">
+      4. Những lưu ý cho người mới bắt đầu
+    </h2>
+    <ol class="list-decimal pl-5 space-y-2 text-zinc-700 dark:text-zinc-300">
+      <li><strong>Mạch nạp ST-Link V2:</strong> Khuyên dùng nạp qua cổng SWD (SWDIO, SWCLK, GND, 3.3V) bằng ST-Link thay vì nạp qua USB bootloader ban đầu.</li>
+      <li><strong>Chân BOOT0 / BOOT1:</strong> Đảm bảo jumper BOOT0 ở mức 0 (GND) để vi điều khiển khởi động chương trình từ bộ nhớ Flash.</li>
+    </ol>
+  </div>
+
+  <!-- Article Footer / Meta -->
+  <footer class="mt-10 pt-6 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="w-6 h-6 rounded-full bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center text-[10px] font-serif font-bold">K</span>
+      <span class="text-xs font-medium text-zinc-600 dark:text-zinc-400">Đăng bởi Kha Zore</span>
+    </div>
+  </footer>
+</article>
