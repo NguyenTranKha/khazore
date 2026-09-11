@@ -26,7 +26,7 @@ export function SiteHeader({ onLogo, onSection }: SiteHeaderProps) {
           onClick={onLogo}
           className="shrink-0 font-serif text-lg font-medium tracking-tight text-fg title-link"
         >
-          Mực Lặng
+          Nguyễn Trần Kha
         </button>
         <nav aria-label="Chính" className="ml-auto min-w-0">
           <ul className="flex items-center gap-3 sm:gap-5 md:gap-7">

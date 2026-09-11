@@ -61,7 +61,7 @@ function Home() {
   const post = slug ? (postBySlug(slug) ?? null) : null;
 
   useEffect(() => {
-    document.title = post ? `${post.title} — Mực Lặng` : "Mực Lặng";
+    document.title = post ? `${post.title} — Nguyễn Trần Kha` : "Nguyễn Trần Kha";
   }, [post]);
 
   useEffect(() => {

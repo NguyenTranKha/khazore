@@ -135,7 +135,7 @@ export function HomePage({ topic, onTopic, onOpen }: HomePageProps) {
             Về tôi
           </h2>
           <p>
-            Tôi viết từ Sài Gòn. Mực Lặng là nơi giữ những bài không vội — ghi chép,
+            Tôi viết từ Sài Gòn. Nguyễn Trần Kha là nơi giữ những bài không vội — ghi chép,
             đọc, phố, và vài suy nghĩ về chữ. Không newsletter, không quảng cáo. Chỉ
             trang này, khi có gì đáng nhớ.
           </p>

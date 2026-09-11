@@ -6,7 +6,7 @@ export function SiteFooter({ onNavigate }: SiteFooterProps) {
   return (
     <footer className="border-t border-line">
       <div className="mx-auto flex max-w-6xl flex-col gap-3 px-5 py-7 md:flex-row md:items-center md:justify-between md:px-8">
-        <p className="text-sm text-meta">© 2026 Mực Lặng</p>
+        <p className="text-sm text-meta">© 2026 Nguyễn Trần Kha</p>
         <ul className="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-meta">
           <li>
             <button

@@ -4,7 +4,7 @@ import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { ThemeProvider } from "@/lib/theme";
 import appCss from "../styles.css?url";
 
-const APP_NAME = "Mực Lặng";
+const APP_NAME = "Nguyễn Trần Kha";
 const APP_DESCRIPTION = "Viết chậm về những thứ đáng nhớ. Một góc viết từ Sài Gòn.";
 
 const THEME_BOOT = `(function(){try{var t=localStorage.getItem("muc-lang-theme");if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}document.documentElement.setAttribute("data-theme",t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute("content",t==="dark"?"#161412":"#F6F3EE");}catch(e){document.documentElement.setAttribute("data-theme","light");}})();`;

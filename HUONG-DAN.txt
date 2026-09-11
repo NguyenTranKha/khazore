@@ -1,4 +1,4 @@
-Mực Lặng — gói đầy đủ HTML/CSS/JS
+Nguyễn Trần Kha — gói đầy đủ HTML/CSS/JS
 =================================
 
 Mở index.html bằng trình duyệt. Không cần cài đặt, chạy offline.
