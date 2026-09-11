@@ -1,167 +1,159 @@
 <!DOCTYPE html>
-<html lang="vi" class="scroll-smooth">
+<html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KHAZORE — Blog Cá Nhân &amp; Ký Sự Kỹ Thuật</title>
-  
-  <!-- Phông chữ Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
-
-  <!-- Tailwind CSS CDN & File Style Riêng -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            serif: ['Playfair Display', 'serif'],
-          }
-        }
-      }
-    }
-  </script>
-  <script src="shared-theme.js"></script>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mực Lặng</title>
+<meta name="description" content="Viết chậm về những thứ đáng nhớ. Một góc viết từ Sài Gòn." />
+<meta name="theme-color" content="#F6F3EE" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="stylesheet" href="css/fonts.css" />
+<link rel="stylesheet" href="css/styles.css" />
+<script>
+(function(){try{var t=localStorage.getItem("muc-lang-theme");if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}})();
+</script>
 </head>
+<body>
 
-<body class="bg-[#fafaf9] text-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 transition-colors duration-300 font-sans min-h-screen flex flex-col justify-between">
-
-  <!-- ==================== HEADER ==================== -->
-  <header class="sticky top-0 z-40 backdrop-blur-md bg-white/80 dark:bg-zinc-950/80 border-b border-zinc-200/80 dark:border-zinc-800/80 transition-colors">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-      
-      <!-- Logo -->
-      <a href="index.html" class="flex items-center gap-3 group">
-        <div class="w-9 h-9 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-950 flex items-center justify-center font-serif text-lg font-bold shadow-sm transition-transform group-hover:scale-105">
-          K
-        </div>
-        <div>
-          <span class="font-serif text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors">
-            KHAZORE
-          </span>
-          <span class="block text-[10px] text-zinc-400 dark:text-zinc-500 uppercase tracking-widest -mt-1 font-medium">
-            Personal Space
-          </span>
-        </div>
-      </a>
-
-      <!-- Tìm kiếm Desktop -->
-      <div class="hidden sm:flex items-center flex-1 max-w-xs relative mx-6">
-        <svg class="w-4 h-4 absolute left-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke-width="2"></circle><line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2"></line></svg>
-        <input id="searchInput" type="text" placeholder="Tìm bài viết..." class="w-full text-xs bg-zinc-100 dark:bg-zinc-900 border border-transparent focus:border-zinc-300 dark:focus:border-zinc-700 rounded-full pl-9 pr-8 py-2 focus:outline-none transition-all placeholder:text-zinc-400" />
-        <button id="clearSearchBtn" class="hidden absolute right-3 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" stroke-width="2"></line><line x1="6" y1="6" x2="18" y2="18" stroke-width="2"></line></svg></button>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="flex items-center gap-2">
-        <button id="themeToggleBtn" aria-label="Đổi giao diện Sáng / Tối" class="p-2 rounded-xl text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
-          <svg id="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" stroke-width="2"></circle><path stroke-width="2" d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path></svg>
-          <svg id="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-        </button>
-
-        <a id="topLatestLink" href="sine_simulation.html" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-medium bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white shadow-sm transition">
-          <span>Mới nhất: Sóng Sin</span>
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-        </a>
-      </div>
-
-    </div>
-
-    <!-- Mobile Search -->
-    <div class="sm:hidden px-4 pb-3">
-      <div class="flex items-center relative">
-        <svg class="w-4 h-4 absolute left-3.5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke-width="2"></circle><line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2"></line></svg>
-        <input id="mobileSearchInput" type="text" placeholder="Tìm bài viết..." class="w-full text-xs bg-zinc-100 dark:bg-zinc-900 border border-zinc-200/50 dark:border-zinc-800 rounded-full pl-9 pr-4 py-2 focus:outline-none" />
-      </div>
-    </div>
-  </header>
-
-  <!-- ==================== MAIN CONTENT ==================== -->
-  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex-1 w-full">
-
-    <section class="mb-10 text-center sm:text-left flex flex-col sm:flex-row sm:items-end justify-between border-b border-zinc-200 dark:border-zinc-800 pb-6 gap-4">
-      <div>
-        <h1 class="text-3xl sm:text-4xl font-serif font-bold text-zinc-900 dark:text-zinc-100 tracking-tight">
-          Khám phá không gian <span class="text-amber-600 dark:text-amber-500">Khazore</span>
-        </h1>
-        <p class="mt-2 text-sm sm:text-base text-zinc-600 dark:text-zinc-400 max-w-xl">
-          Nơi ghi lại những suy ngẫm, dòng code tinh gọn và những bước đi đầu tiên trên hành trình công nghệ.
-        </p>
-      </div>
-      <div class="flex items-center justify-center sm:justify-end gap-2 text-xs text-zinc-500">
-        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span>Static Site • Hosted on GitHub</span>
-      </div>
-    </section>
-
-    <!-- Khung Bài Viết Tiêu Điểm -->
-    <section id="featuredSection" class="mb-12"></section>
-
-    <!-- Bộ Lọc Danh Mục -->
-    <div class="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3 mb-6 gap-4">
-      <div id="categoryChips" class="flex items-center gap-2 overflow-x-auto no-scrollbar whitespace-nowrap py-1">
-        <button data-cat="all" class="cat-btn shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium bg-zinc-900 text-white dark:bg-white dark:text-zinc-950 transition">
-          Tất cả
-        </button>
-        <button data-cat="work" class="cat-btn shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition">
-          Work
-        </button>
-        <button data-cat="sport" class="cat-btn shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition">
-          Sport
-        </button>
-        <button data-cat="knowledge" class="cat-btn shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition">
-          Knowledge
-        </button>
-      </div>
-
-      <span id="articleCount" class="text-xs text-zinc-400 shrink-0">
-        0 bài viết
-      </span>
-    </div>
-
-    <!-- Khung Danh Sách Bài Viết -->
-    <section>
-      <div id="postsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-
-      <!-- Không tìm thấy kết quả -->
-      <div id="noResultsBox" class="hidden text-center py-16 px-4 rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-800 my-6">
-        <svg class="w-10 h-10 mx-auto text-zinc-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" stroke-width="2"></circle><line x1="21" y1="21" x2="16.65" y2="16.65" stroke-width="2"></line></svg>
-        <p class="text-sm font-medium text-zinc-700 dark:text-zinc-300">Không tìm thấy bài viết phù hợp</p>
-        <p class="text-xs text-zinc-400 mt-1">Hãy thử tìm với từ khóa khác hoặc bấm chọn 'Tất cả'.</p>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- Toast Thông Báo -->
-  <div id="toastMessage" class="fixed bottom-6 right-6 z-50 transform translate-y-16 opacity-0 transition-all duration-300 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2">
-    <svg class="w-4 h-4 text-amber-400 dark:text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>
-    <span id="toastText">Đã sao chép liên kết vào bộ nhớ tạm!</span>
+<header class="site-header">
+  <a class="sr-only" href="#noi-dung">Bỏ qua đến nội dung</a>
+  <div class="wrap site-header__inner">
+    <a class="logo title-link" href="index.html">Mực Lặng</a>
+    <nav class="nav" aria-label="Chính"><ul>
+      <li><a class="title-link" href="index.html#bai-viet">Viết</a></li>
+      <li><a class="title-link" href="index.html#chu-de">Chủ đề</a></li>
+      <li><a class="title-link" href="index.html#ve-toi">Về tôi</a></li>
+    </ul></nav>
+    <button type="button" class="theme-toggle" data-theme-toggle aria-label="Chuyển sang giao diện tối">
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 3v1.5M12 19.5V21M4.93 4.93l1.06 1.06M18.01 18.01l1.06 1.06M3 12h1.5M19.5 12H21M4.93 19.07l1.06-1.06M18.01 5.99l1.06-1.06"/></svg>
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 7 7 0 0 0 21 14.5z"/></svg>
+</button>
   </div>
-
-  <!-- FOOTER -->
-  <footer class="border-t border-zinc-200 dark:border-zinc-800/80 bg-white/60 dark:bg-zinc-950/60 py-8 text-xs text-zinc-500 transition-colors">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-2">
-        <span class="font-serif font-bold text-zinc-800 dark:text-zinc-200">KHAZORE</span>
-        <span>—</span>
-        <span>Viết bằng sự tĩnh lặng và đam mê mã nguồn.</span>
-      </div>
-      <div class="flex items-center gap-6">
-        <a href="posts/sine_simulation.html" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition">Mô phỏng sóng Sin</a>
-        <a href="posts/first_step.html" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition">Bài viết đầu tiên</a>
-        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 dark:hover:text-zinc-100 transition">GitHub</a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Tải dữ liệu bài viết trước, sau đó chạy main.js -->
-  <script src="posts.js"></script>
-  <script src="main.js"></script>
-</body>
-</html>
+</header>
+<main id="noi-dung">
+<section class="hero wrap">
+<p class="hero__line">Viết chậm về những thứ đáng nhớ</p>
+<p class="hero__dek">Một góc viết từ Sài Gòn. Ít bài, đọc chậm, không vội xuất bản cho đủ lịch.</p>
+</section>
+<section class="featured wrap" aria-labelledby="noi-bat-heading">
+<p id="noi-bat-heading" class="kicker">Bài nổi bật</p>
+<article>
+<a class="cover-btn" href="bai/viet-ben-ly-den-da.html" aria-label="Đọc bài: Viết bên ly đen đá"><div class="cover cover--clay">
+<img src="img/viet-ben-ly-den-da.jpg" alt="Ly cà phê trên bàn gỗ, ánh sáng buổi sáng" width="1400" height="788" />
+</div></a>
+<div class="measure featured__copy">
+<h3 class="featured__title"><a class="title-link" href="bai/viet-ben-ly-den-da.html">Viết bên ly đen đá</a></h3>
+<p class="featured__excerpt">Cà phê đen đá không phải thức uống. Ở Sài Gòn, nó là chỗ ngồi, là khoảng lặng giữa hai việc, là lúc chữ bắt đầu chịu ra.</p>
+<p class="featured__meta"><span class="meta-accent">Ghi chép</span> · <time datetime="2026-09-04">4 tháng 9, 2026</time> · 8 phút đọc</p>
+</div>
+</article>
+</section>
+<section id="bai-viet" class="posts wrap" aria-labelledby="bai-moi-heading">
+<div class="posts__head">
+<h2 id="bai-moi-heading" class="kicker">Bài mới</h2>
+<button type="button" class="posts__all title-link" id="clear-topic" hidden>Xem tất cả</button>
+</div>
+<ul class="grid" id="posts-root"><li data-category="Đọc">
+<article class="card">
+<a class="cover-btn" href="bai/doc-cham-doc-lai.html" aria-label="Đọc bài: Đọc chậm, đọc lại"><div class="cover cover--ink">
+<img src="img/doc-cham-doc-lai.jpg" alt="Giá sách gỗ và ánh sáng cửa sổ" width="1400" height="788" />
+</div></a>
+<h3 class="card__title"><a class="title-link" href="bai/doc-cham-doc-lai.html">Đọc chậm, đọc lại</a></h3>
+<p class="card__excerpt">Một cuốn sách hay không cần đọc nhanh. Nó cần chỗ trống giữa các câu, và vài buổi chiều để quay lại trang đã gấp.</p>
+<p class="card__meta"><span class="meta-accent">Đọc</span> · <time datetime="2026-08-28">28 tháng 8, 2026</time></p>
+</article>
+</li><li data-category="Ở Sài Gòn">
+<article class="card">
+<a class="cover-btn" href="bai/hem-nho-gan-cho-ben-thanh.html" aria-label="Đọc bài: Hẻm nhỏ gần chợ Bến Thành"><div class="cover cover--moss">
+<img src="img/hem-nho-gan-cho-ben-thanh.jpg" alt="Hẻm phố Việt Nam với đèn và nhà ống" width="1400" height="788" />
+</div></a>
+<h3 class="card__title"><a class="title-link" href="bai/hem-nho-gan-cho-ben-thanh.html">Hẻm nhỏ gần chợ Bến Thành</a></h3>
+<p class="card__excerpt">Trong hẻm, thời gian đi chậm hơn ngoài đường. Người ta bán chè, sửa xe, phơi áo. Tôi hay đứng đó một lúc trước khi đi tiếp.</p>
+<p class="card__meta"><span class="meta-accent">Ở Sài Gòn</span> · <time datetime="2026-08-21">21 tháng 8, 2026</time></p>
+</article>
+</li><li data-category="Ghi chép">
+<article class="card">
+<a class="cover-btn" href="bai/so-tay-va-muc-xanh.html" aria-label="Đọc bài: Sổ tay và mực xanh"><div class="cover cover--tea">
+<img src="img/so-tay-va-muc-xanh.jpg" alt="Sổ tay mở và bút máy trên bàn" width="1400" height="788" />
+</div></a>
+<h3 class="card__title"><a class="title-link" href="bai/so-tay-va-muc-xanh.html">Sổ tay và mực xanh</a></h3>
+<p class="card__excerpt">Tôi không tin ghi chú trên điện thoại. Chữ viết tay giữ được nhịp thở của buổi đó, kể cả khi nội dung chẳng còn quan trọng.</p>
+<p class="card__meta"><span class="meta-accent">Ghi chép</span> · <time datetime="2026-08-14">14 tháng 8, 2026</time></p>
+</article>
+</li><li data-category="Thiết kế">
+<article class="card">
+<a class="cover-btn" href="bai/khoang-trang-cung-la-thiet-ke.html" aria-label="Đọc bài: Khoảng trắng cũng là thiết kế"><div class="cover cover--pine">
+<img src="img/khoang-trang-cung-la-thiet-ke.jpg" alt="Bàn làm việc gọn, giấy và tách cà phê" width="1400" height="788" />
+</div></a>
+<h3 class="card__title"><a class="title-link" href="bai/khoang-trang-cung-la-thiet-ke.html">Khoảng trắng cũng là thiết kế</a></h3>
+<p class="card__excerpt">Một trang đẹp không phải vì nhồi chữ. Nó đẹp vì biết để yên những chỗ trống, để mắt có chỗ nghỉ.</p>
+<p class="card__meta"><span class="meta-accent">Thiết kế</span> · <time datetime="2026-08-07">7 tháng 8, 2026</time></p>
+</article>
+</li><li data-category="Đọc">
+<article class="card">
+<a class="cover-btn" href="bai/nhung-trang-khong-can-gap.html" aria-label="Đọc bài: Những trang không cần gấp"><div class="cover cover--ink">
+<img src="img/nhung-trang-khong-can-gap.jpg" alt="Sách mở trên đùi, ánh sáng dịu" width="1400" height="788" />
+</div></a>
+<h3 class="card__title"><a class="title-link" href="bai/nhung-trang-khong-can-gap.html">Những trang không cần gấp</a></h3>
+<p class="card__excerpt">Có những đoạn văn tôi đọc ba lần. Không phải vì khó. Vì muốn ở lại thêm một chút, như đứng trước cửa sổ mưa.</p>
+<p class="card__meta"><span class="meta-accent">Đọc</span> · <time datetime="2026-07-30">30 tháng 7, 2026</time></p>
+</article>
+</li><li data-category="Ở Sài Gòn">
+<article class="card">
+<a class="cover-btn" href="bai/sai-gon-sau-con-mua.html" aria-label="Đọc bài: Sài Gòn sau cơn mưa"><div class="cover cover--moss">
+<img src="img/sai-gon-sau-con-mua.jpg" alt="Cửa sổ kính ướt mưa, phố mờ phía ngoài" width="1400" height="788" />
+</div></a>
+<h3 class="card__title"><a class="title-link" href="bai/sai-gon-sau-con-mua.html">Sài Gòn sau cơn mưa</a></h3>
+<p class="card__excerpt">Mưa tạnh, phố bốc hơi. Xe máy len qua vũng nước. Mùi đất và xăng hòa vào nhau — thứ mùi chỉ có ở thành phố này.</p>
+<p class="card__meta"><span class="meta-accent">Ở Sài Gòn</span> · <time datetime="2026-07-22">22 tháng 7, 2026</time></p>
+</article>
+</li><li data-category="Ghi chép">
+<article class="card">
+<a class="cover-btn" href="bai/viet-khi-thanh-pho-ngu.html" aria-label="Đọc bài: Viết khi thành phố ngủ"><div class="cover cover--clay">
+<img src="img/viet-khi-thanh-pho-ngu.jpg" alt="Bàn viết ban đêm dưới ánh đèn" width="1400" height="788" />
+</div></a>
+<h3 class="card__title"><a class="title-link" href="bai/viet-khi-thanh-pho-ngu.html">Viết khi thành phố ngủ</a></h3>
+<p class="card__excerpt">Nửa đêm, máy lạnh kêu nhỏ. Tôi mở sổ. Những câu ban ngày không dám viết thì ban đêm tự đến.</p>
+<p class="card__meta"><span class="meta-accent">Ghi chép</span> · <time datetime="2026-07-11">11 tháng 7, 2026</time></p>
+</article>
+</li><li data-category="Thiết kế">
+<article class="card">
+<a class="cover-btn" href="bai/chu-serif-va-su-cham-rai.html" aria-label="Đọc bài: Chữ serif và sự chậm rãi"><div class="cover cover--tea">
+<img src="img/chu-serif-va-su-cham-rai.jpg" alt="Chữ đúc chì và bản in thử trên giấy" width="1400" height="788" />
+</div></a>
+<h3 class="card__title"><a class="title-link" href="bai/chu-serif-va-su-cham-rai.html">Chữ serif và sự chậm rãi</a></h3>
+<p class="card__excerpt">Serif không chỉ là chân chữ. Nó là cách nói: hãy đọc chậm, như người ta từng đọc trên giấy.</p>
+<p class="card__meta"><span class="meta-accent">Thiết kế</span> · <time datetime="2026-06-29">29 tháng 6, 2026</time></p>
+</article>
+</li></ul>
+</section>
+<section id="chu-de" class="topics wrap" aria-labelledby="chu-de-heading">
+<h2 id="chu-de-heading" class="kicker">Chủ đề</h2>
+<ul class="tags"><li><button type="button" class="tag" data-topic="Đọc">Đọc</button></li><li><button type="button" class="tag" data-topic="Ở Sài Gòn">Ở Sài Gòn</button></li><li><button type="button" class="tag" data-topic="Ghi chép">Ghi chép</button></li><li><button type="button" class="tag" data-topic="Thiết kế">Thiết kế</button></li></ul>
+</section>
+<section id="ve-toi" class="about wrap" aria-labelledby="ve-toi-heading">
+<div class="about__inner">
+<h2 id="ve-toi-heading" class="kicker">Về tôi</h2>
+<p>Tôi viết từ Sài Gòn. Mực Lặng là nơi giữ những bài không vội — ghi chép, đọc, phố, và vài suy nghĩ về chữ. Không newsletter, không quảng cáo. Chỉ trang này, khi có gì đáng nhớ.</p>
+</div>
+</section>
+<section id="colophon" class="colophon wrap" aria-labelledby="colophon-heading">
+<div class="colophon__inner">
+<h2 id="colophon-heading" class="kicker">Colophon</h2>
+<p>Chữ tiêu đề Fraunces, chữ bài Source Sans 3. Nền giấy ấm, accent xanh rêu. Trang được xếp để đọc, không để lướt.</p>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+  <div class="wrap site-footer__inner">
+    <p>© 2026 Mực Lặng</p>
+    <ul>
+      <li><a class="title-link" href="index.html#chu-de">Chủ đề</a></li>
+      <li><a class="title-link" href="index.html#ve-toi">Về tôi</a></li>
+      <li><a class="title-link" href="index.html#colophon">Colophon</a></li>
+    </ul>
+  </div>
+</footer>
+<script src="js/theme.js"></script>
+<script src="js/filter.js"></script>
+</body></html>

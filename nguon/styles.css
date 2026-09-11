@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  --font-serif: "Fraunces", "Source Serif 4", ui-serif, Georgia, "Times New Roman",
+    serif;
+  --font-sans: "Source Sans 3", "IBM Plex Sans", ui-sans-serif, system-ui,
+    sans-serif;
+
+  --color-bg: var(--muc-bg);
+  --color-fg: var(--muc-fg);
+  --color-accent: var(--muc-accent);
+  --color-meta: var(--muc-meta);
+  --color-line: var(--muc-line);
+  --color-surface: var(--muc-surface);
+  --color-cover-moss: var(--muc-cover-moss);
+  --color-cover-ink: var(--muc-cover-ink);
+  --color-cover-clay: var(--muc-cover-clay);
+  --color-cover-tea: var(--muc-cover-tea);
+  --color-cover-pine: var(--muc-cover-pine);
+
+  --text-kicker: 0.6875rem;
+  --text-kicker--line-height: 1.4;
+  --text-hero: 1.65rem;
+  --text-hero--line-height: 1.22;
+  --text-hero--letter-spacing: -0.02em;
+  --text-hero-md: 2.125rem;
+  --text-hero-md--line-height: 1.2;
+  --text-hero-md--letter-spacing: -0.02em;
+  --text-feature: 1.65rem;
+  --text-feature--line-height: 1.18;
+  --text-feature--letter-spacing: -0.02em;
+  --text-feature-md: 2rem;
+  --text-feature-md--line-height: 1.16;
+  --text-feature-md--letter-spacing: -0.02em;
+  --text-title: 1.2rem;
+  --text-title--line-height: 1.28;
+  --text-title--letter-spacing: -0.02em;
+  --text-title-md: 1.35rem;
+  --text-title-md--line-height: 1.26;
+  --text-title-md--letter-spacing: -0.02em;
+  --text-article: 1.85rem;
+  --text-article--line-height: 1.16;
+  --text-article--letter-spacing: -0.02em;
+  --text-article-md: 2.35rem;
+  --text-article-md--line-height: 1.14;
+  --text-article-md--letter-spacing: -0.02em;
+
+  --tracking-kicker: 0.14em;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+}
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --muc-bg: #f6f3ee;
+  --muc-fg: #1c1917;
+  --muc-accent: #3f5c4a;
+  --muc-meta: #78716c;
+  --muc-line: #ddd6cc;
+  --muc-surface: #eee9e1;
+  --muc-cover-moss: #3f5c4a;
+  --muc-cover-ink: #2a2623;
+  --muc-cover-clay: #6b5344;
+  --muc-cover-tea: #8a6d4d;
+  --muc-cover-pine: #2f4538;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --muc-bg: #161412;
+  --muc-fg: #ede8e1;
+  --muc-accent: #8fa894;
+  --muc-meta: #a8a29e;
+  --muc-line: #2e2a26;
+  --muc-surface: #1e1b18;
+  --muc-cover-moss: #3f5c4a;
+  --muc-cover-ink: #2a2623;
+  --muc-cover-clay: #6b5344;
+  --muc-cover-tea: #8a6d4d;
+  --muc-cover-pine: #2f4538;
+}
+
+@layer base {
+  html {
+    background-color: var(--muc-bg);
+    color: var(--muc-fg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+    scroll-padding-top: 4.5rem;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.7;
+    background-color: var(--muc-bg);
+    color: var(--muc-fg);
+  }
+
+  @media (min-width: 768px) {
+    body {
+      font-size: 19px;
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-optical-sizing: auto;
+    font-weight: 500;
+    line-height: 1.18;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--muc-accent);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--muc-accent) 28%, transparent);
+    color: var(--muc-fg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@utility measure {
+  max-width: 68ch;
+}
+
+@utility title-link {
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+  transition:
+    color 150ms ease,
+    text-decoration-color 150ms ease;
+
+  &:hover {
+    color: var(--muc-accent);
+    text-decoration-color: var(--muc-accent);
+  }
+}
+
+@utility cover-frame {
+  outline: 1px solid color-mix(in oklab, var(--muc-fg) 10%, transparent);
+  outline-offset: -1px;
+}

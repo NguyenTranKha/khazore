@@ -1,0 +1,21 @@
+Mực Lặng — gói đầy đủ HTML/CSS/JS
+=================================
+
+Mở index.html bằng trình duyệt. Không cần cài đặt, chạy offline.
+
+Cấu trúc
+--------
+index.html          Trang chủ
+bai/*.html          9 trang bài viết
+css/styles.css      Giao diện Light/Dark
+css/fonts.css       Font local
+fonts/*.woff2       File chữ
+js/theme.js         Đổi sáng/tối
+js/filter.js        Lọc chủ đề
+img/*.jpg           9 ảnh bìa + og.jpg
+favicon.svg
+nguon/              Mã nguồn React gốc
+
+Sửa chữ: index.html hoặc bai/*.html
+Sửa màu: css/styles.css
+Sửa ảnh: thay file trong img/ (giữ tên)
