@@ -16,7 +16,7 @@ Biomimicry is the practice of learning from and mimicking natural processes and 
 
 ---
 
-## 2. Smart Environmental Conservation
+## 2. Smart Environmental Con
 
 Advanced technologies are revolutionizing how environmentalists protect endangered species and fragile ecosystems.
 
