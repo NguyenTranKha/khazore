@@ -6,8 +6,8 @@ on:
     paths:
       - "md/**"
       - "img/**"
-      - "scripts/build-posts.cjs"
-      - ".github/workflows/build-posts.yml"
+      - "scripts/**"
+      - ".github/workflows/**"
   workflow_dispatch:
 
 concurrency:
@@ -20,11 +20,12 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Node.js
         uses: actions/setup-node@v4
@@ -32,10 +33,24 @@ jobs:
           node-version: "22"
 
       - name: Cài marked rồi gen HTML mọi bài
+        env:
+          NODE_PATH: /tmp/mdbuild/node_modules
         run: |
+          set -eu
+          echo "workspace=$GITHUB_WORKSPACE"
+          pwd
+          ls -la
+          ls -la scripts || true
+          ls -la md || true
+          SCRIPT="$GITHUB_WORKSPACE/scripts/build-posts.cjs"
+          if [ ! -f "$SCRIPT" ]; then
+            echo "::error::Thiếu $SCRIPT — hãy commit file scripts/build-posts.cjs rồi Run workflow lại."
+            find "$GITHUB_WORKSPACE" -name 'build-posts*' -o -name '*.cjs' | head
+            exit 1
+          fi
           mkdir -p /tmp/mdbuild
           npm install --prefix /tmp/mdbuild marked@15.0.12
-          NODE_PATH=/tmp/mdbuild/node_modules node scripts/build-posts.cjs
+          node "$SCRIPT"
 
       - name: Commit HTML đã gen
         run: |
