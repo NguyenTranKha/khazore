@@ -1,0 +1,50 @@
+name: jekyll-docker
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "md/**"
+      - "img/**"
+      - "scripts/build-posts.cjs"
+      - ".github/workflows/build-posts.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: gen-html-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Cài marked rồi gen HTML mọi bài
+        run: |
+          mkdir -p /tmp/mdbuild
+          npm install --prefix /tmp/mdbuild marked@15.0.12
+          NODE_PATH=/tmp/mdbuild/node_modules node scripts/build-posts.cjs
+
+      - name: Commit HTML đã gen
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add bai index.html posts.json
+          if git diff --staged --quiet; then
+            echo "Không có thay đổi HTML."
+            exit 0
+          fi
+          git commit -m "chore: gen lại HTML từ markdown"
+          git push
