@@ -1,17 +1,17 @@
 [
   {
     "id": "1",
-    "slug": "sai-gon-hom-nay-van-vay",
-    "title": "Sài Gòn hôm nay vẫn vậy",
-    "excerpt": "Ngoài kia mưa nặng trĩu. Trong tôi thì không. Một chương sách, một trang blog, rồi đoạn đường dưới sáu mươi — nón kín, mặt không rát.",
-    "category": "Ở Sài Gòn",
+    "slug": "hand-post",
+    "title": "Bài viết bằng tay đầu tiên của tôi",
+    "excerpt": "Lý do có blog này",
+    "category": "Ghi chép",
     "date": "2026-09-13",
     "dateLabel": "13 tháng 9, 2026",
     "readingMinutes": 5,
-    "image": "img/sai-gon-hom-nay-van-vay.jpg",
-    "imageAlt": "Phố Sài Gòn sau mưa, kính cửa còn ướt",
-    "cover": "moss",
-    "featured": true
+    "image": "img/kha.jpg",
+    "imageAlt": "Mô tả ảnh bìa",
+    "cover": "clay",
+    "featured": false
   },
   {
     "id": "2",
