@@ -1,3 +1,0 @@
-name: jekyll-docker
-- uses: actions/checkout@v4
-- run: unzip khazoe-site.zip -d public
