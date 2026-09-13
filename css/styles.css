@@ -633,6 +633,27 @@ button:not(:disabled),
   color: var(--meta);
 }
 
+.article__body.measure {
+  margin-inline: auto;
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+.article__title,
+.article__cat,
+.article__meta {
+  max-width: 68ch;
+  margin-inline: auto;
+  text-align: left;
+}
+
+.article__body.measure h2,
+.article__body.measure h3 {
+  text-align: left;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
