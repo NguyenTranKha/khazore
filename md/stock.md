@@ -8,6 +8,7 @@ image: https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f
 alt: Màn hình biểu đồ chứng khoán
 readingMinutes: 12
 featured: false
+draft: true
 ---
 
 #### CHƯƠNG 1: CÁC CHỈ SỐ TÀI CHÍNH CƠ BẢN & ĐỊNH GIÁ DOANH NGHIỆP
