@@ -10,7 +10,7 @@
     "readingMinutes": 12,
     "image": "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f",
     "imageAlt": "Màn hình biểu đồ chứng khoán",
-    "cover": "ink",
+    "cover": "clay",
     "featured": false
   },
   {
@@ -39,7 +39,7 @@
     "image": "img/doc-cham-doc-lai.jpg",
     "imageAlt": "Đọc chậm, đọc lại",
     "cover": "ink",
-    "featured": false
+    "featured": true
   },
   {
     "id": "4",
