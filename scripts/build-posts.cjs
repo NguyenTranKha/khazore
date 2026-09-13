@@ -143,6 +143,19 @@ function looksLikePath(s) {
   return typeof s === "string" && /\.(jpe?g|png|webp|gif|svg)$/i.test(s);
 }
 
+function hasMath(md) {
+  return /\$\$[\s\S]+?\$\$/.test(md) || /(^|[^$])\$[^$\n]+\$(?!\$)/.test(md);
+}
+
+function katexHead() {
+  return `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
+`;
+}
+
+
 function loadPosts() {
   if (!fs.existsSync(MD_DIR)) {
     throw new Error("Không thấy thư mục md/. Hãy đặt file .md vào md/");
@@ -179,8 +192,12 @@ function loadPosts() {
       data.coverImage ||
       (looksLikePath(data.imageAlt) ? data.imageAlt : "") ||
       `img/${slug}.jpg`;
-    image = String(image).replace(/^\.\.\//, "").replace(/^\//, "");
-    if (!image.startsWith("img/")) image = `img/${image}`;
+    image = String(image).trim();
+    const remote = /^(https?:)?\/\//i.test(image) || image.startsWith("data:");
+    if (!remote) {
+      image = image.replace(/^\.\.\//, "").replace(/^\//, "");
+      if (!image.startsWith("img/")) image = `img/${image}`;
+    }
 
     const alt =
       (!looksLikePath(data.alt) && data.alt) ||
@@ -199,6 +216,7 @@ function loadPosts() {
       imageAlt: alt,
       readingMinutes,
       featured: data.featured === true,
+      math: hasMath(mdBody),
       bodyHtml: renderBody(mdBody),
     });
   }
@@ -258,7 +276,7 @@ function articleHtml(post) {
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <link rel="stylesheet" href="../css/fonts.css" />
 <link rel="stylesheet" href="../css/styles.css" />
-${themeScript()}
+${post.math ? katexHead() : ""}${themeScript()}
 </head>
 <body>
 
@@ -403,8 +421,11 @@ function main() {
   for (const post of posts) {
     const out = path.join(BAI_DIR, `${post.slug}.html`);
     fs.writeFileSync(out, articleHtml(post));
-    const img = path.join(IMG_DIR, post.image.replace(/^img\//, ""));
-    if (!fs.existsSync(img)) console.warn("thiếu ảnh bìa:", img);
+    const remoteImg = /^(https?:)?\/\//i.test(post.image) || String(post.image).startsWith("data:");
+    if (!remoteImg) {
+      const img = path.join(IMG_DIR, post.image.replace(/^img\//, ""));
+      if (!fs.existsSync(img)) console.warn("thiếu ảnh bìa:", img);
+    }
     console.log("gen", post.slug, post.date);
   }
 
