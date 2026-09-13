@@ -12,7 +12,7 @@ featured: false
 
 Bút máy, mực xanh lục nhạt. Không phải vì cổ điển. Vì khi viết, tôi buộc phải chậm — mực ướt, không xóa được bằng một phím.
 
-Điện thoại ghi đúng chữ, sai nhịp. Một ý tưởng lúc nửa đêm gõ vào Notes thì phẳng. Cùng ý đó viết vào sổ thì nghiêng, đậm nhạt khác nhau, có chỗ gạch xéo. Đó là dấu vết của lúc viết, không chỉ của nội dung.
+Điện thoại ghi đúng chữ, sai nhịp. Một ý tưởng lúc nửa đêm gõ vào Notes thì phẳng. Cùng ý đó viết vào sổ thì nghiêng, đậm nhạt khác nhau, có chỗ gạch xéo. Đó là dấu vết của lúc viết, không chỉ của nội dung. test
 
 Tôi không dùng sổ làm bullet journal. Không sticker, không kẻ bảng thói quen. Chỉ ngày, rồi vài câu. Có trang chỉ có một từ. Có trang chi chít vì mưa, không đi được.
 
