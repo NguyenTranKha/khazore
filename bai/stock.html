@@ -3,12 +3,16 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Stock — Nguyễn Trần Kha</title>
-<meta name="description" content="Một câu dẫn ngắn hiện trên trang chủ." />
+<title>Cẩm nang chứng khoán — Nguyễn Trần Kha</title>
+<meta name="description" content="EPS, P/E, P/B và số Graham — các công thức định giá viết lại cho dễ đọc." />
 <meta name="theme-color" content="#F6F3EE" />
 <link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <link rel="stylesheet" href="../css/fonts.css" />
 <link rel="stylesheet" href="../css/styles.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});"></script>
 <script>
 (function(){try{var t=localStorage.getItem("muc-lang-theme");if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}})();
 </script>
@@ -36,20 +40,18 @@
 Tất cả bài viết
 </a>
 <p class="article__cat">Chứng khoán</p>
-<h1 class="article__title">Stock</h1>
-<p class="article__meta"><time datetime="2026-09-13">13 tháng 9, 2026</time> · 5 phút đọc</p>
+<h1 class="article__title">Cẩm nang chứng khoán</h1>
+<p class="article__meta"><time datetime="2026-09-13">13 tháng 9, 2026</time> · 12 phút đọc</p>
 <div class="cover cover--ink">
-<img src="../img/https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f" alt="Mô tả ảnh bìa" width="1400" height="788" />
+<img src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f" alt="Màn hình biểu đồ chứng khoán" width="1400" height="788" />
 </div>
 <div class="article__body measure">
-<h1>CẨM NANG TOÀN TẬP VỀ CHỨNG KHOÁN &amp; CÔNG THỨC TOÁN HỌC TÀI CHÍNH</h1>
-<hr>
-<h2>CHƯƠNG 1: CÁC CHỈ SỐ TÀI CHÍNH CƠ BẢN &amp; ĐỊNH GIÁ DOANH NGHIỆP</h2>
-<h3>1. Chỉ Số Lợi Nhuận Trên Mỗi Cổ Phiếu (EPS - Earnings Per Share)</h3>
+<h4>CHƯƠNG 1: CÁC CHỈ SỐ TÀI CHÍNH CƠ BẢN &amp; ĐỊNH GIÁ DOANH NGHIỆP</h4>
+<h5>1. Chỉ Số Lợi Nhuận Trên Mỗi Cổ Phiếu (EPS - Earnings Per Share)</h5>
 <p>EPS đo lường phần lợi nhuận ròng phân bổ cho mỗi cổ phiếu phổ thông đang lưu hành trên thị trường:</p>
 <p>$$\text{EPS} = \frac{\text{Lợi nhuận ròng} - \text{Cổ tức ưu đãi}}{\text{Số lượng cổ phiếu phổ thông đang lưu hành}}$$</p>
 <hr>
-<h3>2. Hệ Số Giá Trên Thu Nhập (P/E - Price to Earnings Ratio)</h3>
+<h5>2. Hệ Số Giá Trên Thu Nhập (P/E - Price to Earnings Ratio)</h5>
 <p>Chỉ số P/E cho biết nhà đầu tư sẵn sàng trả bao nhiêu tiền cho 1 đồng lợi nhuận của doanh nghiệp:</p>
 <p>$$\text{P/E} = \frac{P}{\text{EPS}}$$</p>
 <p>Trong đó:</p>
@@ -58,22 +60,22 @@ Tất cả bài viết
 <li>$\text{EPS}$: Lợi nhuận trên mỗi cổ phiếu.</li>
 </ul>
 <hr>
-<h3>3. Tỷ Suất Lợi Tức Thu Nhập (Earnings Yield - $E/P$)</h3>
+<h5>3. Tỷ Suất Lợi Tức Thu Nhập (Earnings Yield - $E/P$)</h5>
 <p>Earnings Yield là nghịch đảo của chỉ số P/E, phản ánh tỷ suất lợi nhuận ngầm định mà nhà đầu tư nhận được trên mức giá đã mua:</p>
 <p>$$\text{Earnings Yield} = \frac{1}{\text{P/E}} = \frac{\text{EPS}}{P}$$</p>
 <p><em>Ví dụ:</em> Nếu $\text{P/E} = 15$, tỷ suất lợi tức thu nhập tương ứng là:</p>
 <p>$$\text{Earnings Yield} = \frac{1}{15} \approx 6.67%$$</p>
 <hr>
-<h3>4. Giá Trị Sổ Sách Trên Mỗi Cổ Phiếu (BVPS - Book Value Per Share)</h3>
+<h5>4. Giá Trị Sổ Sách Trên Mỗi Cổ Phiếu (BVPS - Book Value Per Share)</h5>
 <p>BVPS phản ánh giá trị tài sản thuần của doanh nghiệp tính trên mỗi cổ phiếu nếu công ty giải thể và thanh toán hết các khoản nợ:</p>
 <p>$$\text{BVPS} = \frac{\text{Vốn chủ sở hữu} - \text{Tài sản vô hình}}{\text{Số lượng cổ phiếu đang lưu hành}}$$</p>
 <hr>
-<h3>5. Hệ Số Giá Trên Giá Trị Sổ Sách (P/B - Price to Book Ratio)</h3>
+<h5>5. Hệ Số Giá Trên Giá Trị Sổ Sách (P/B - Price to Book Ratio)</h5>
 <p>Chỉ số P/B so sánh thị giá hiện tại trên sàn với giá trị tài sản thuần ghi nhận trên sổ sách kế toán:</p>
 <p>$$\text{P/B} = \frac{P}{\text{BVPS}}$$</p>
 <hr>
-<h2>CHƯƠNG 2: MÔ HÌNH ĐỊNH GIÁ BENJAMIN GRAHAM &amp; HẰNG SỐ 22.5</h2>
-<h3>1. Nguồn Gốc Toán Học Của Hằng Số 22.5</h3>
+<h4>CHƯƠNG 2: MÔ HÌNH ĐỊNH GIÁ BENJAMIN GRAHAM &amp; HẰNG SỐ 22.5</h4>
+<h5>1. Nguồn Gốc Toán Học Của Hằng Số 22.5</h5>
 <p>Benjamin Graham thiết lập hai tiêu chuẩn phòng thủ trần cho một nhà đầu tư giá trị:</p>
 <ol>
 <li>Giới hạn định giá thu nhập: $\text{P/E} \le 15$ (tương ứng lợi tức $\ge 6.67%$).</li>
@@ -82,17 +84,17 @@ Tất cả bài viết
 <p>Tích số hai tiêu chuẩn quản trị rủi ro tạo thành hằng số định giá mục tiêu:</p>
 <p>$$\text{Hạn mức P/E} \times \text{Hạn mức P/B} = 15 \times 1.5 = 22.5$$</p>
 <hr>
-<h3>2. Công Thức Tính Giá Trị Nội Tại (Số Graham - Graham Number)</h3>
+<h5>2. Công Thức Tính Giá Trị Nội Tại (Số Graham - Graham Number)</h5>
 <p>Từ tích số phòng thủ $22.5$, công thức tính giá trị nội tại tối đa ($V$) được xác định như sau:</p>
 <p>$$V = \sqrt{22.5 \times \text{EPS} \times \text{BVPS}}$$</p>
 <p>Nếu thị giá $P &lt; V$, cổ phiếu đạt tiêu chuẩn biên an toàn của Graham.</p>
 <hr>
-<h3>3. Nguyên Lý Bù Trừ Thu Nhập Và Tài Sản (The Compensating Principle)</h3>
+<h5>3. Nguyên Lý Bù Trừ Thu Nhập Và Tài Sản (The Compensating Principle)</h5>
 <p>Hằng số $22.5$ cho phép sự linh hoạt giữa $P/E$ và $P/B$:</p>
 <p>$$\text{P/E} \times \text{P/B} \le 22.5$$</p>
 <p>$$\Rightarrow \text{P/E}<em>{\text{cho phép}} \le \frac{22.5}{\text{P/B}</em>{\text{hiện tại}}} \quad \text{hoặc} \quad \text{P/B}<em>{\text{cho phép}} \le \frac{22.5}{\text{P/E}</em>{\text{hiện tại}}}$$</p>
 <hr>
-<h2>CHƯƠNG 3: NGUYÊN LÝ ĐIỀU CHỈNH GIÁ KỸ THUẬT KHI CHIA CỔ TỨC</h2>
+<h4>CHƯƠNG 3: NGUYÊN LÝ ĐIỀU CHỈNH GIÁ KỸ THUẬT KHI CHIA CỔ TỨC</h4>
 <p>Khi doanh nghiệp chia cổ tức bằng cổ phiếu hoặc thưởng cổ phiếu, tổng vốn hóa thị trường trước và sau ngày giao dịch không hưởng quyền (GDKHQ) được bảo toàn:</p>
 <p>$$\text{Vốn hóa}<em>{\text{trước chia}} = \text{Vốn hóa}</em>{\text{sau chia}}$$</p>
 <p>$$P_{\text{trước}} \times Q_{\text{trước}} = P_{\text{sau}} \times Q_{\text{sau}}$$</p>
@@ -105,8 +107,8 @@ Tất cả bài viết
 <li>$\Delta Q$: Số lượng cổ phiếu phát hành thêm.</li>
 </ul>
 <hr>
-<h2>CHƯƠNG 4: PHÂN TÍCH KỸ THUẬT &amp; TOÁN HỌC ĐƯỜNG TRUNG BÌNH ĐỘNG</h2>
-<h3>1. Đường Trung Bình Động Đơn Giản (SMA - Simple Moving Average)</h3>
+<h4>CHƯƠNG 4: PHÂN TÍCH KỸ THUẬT &amp; TOÁN HỌC ĐƯỜNG TRUNG BÌNH ĐỘNG</h4>
+<h5>1. Đường Trung Bình Động Đơn Giản (SMA - Simple Moving Average)</h5>
 <p>Đường SMA làm mượt dữ liệu giá bằng cách tính trung bình cộng giá đóng cửa trong $n$ phiên giao dịch:</p>
 <p>$$\text{SMA}<em>n = \frac{\sum</em>{i=1}^{n} P_i}{n} = \frac{P_1 + P_2 + \dots + P_n}{n}$$</p>
 <ul>
@@ -114,7 +116,7 @@ Tất cả bài viết
 <li><strong>MA200:</strong> Trung bình 200 phiên (Xác định xu hướng vĩ mô dài hạn Uptrend / Downtrend).</li>
 </ul>
 <hr>
-<h3>2. Tín Hiệu Giao Cắt Vàng (Golden Cross) &amp; Giao Cắt Tử Thần (Death Cross)</h3>
+<h5>2. Tín Hiệu Giao Cắt Vàng (Golden Cross) &amp; Giao Cắt Tử Thần (Death Cross)</h5>
 <ul>
 <li><p><strong>Golden Cross (Xu hướng tăng dài hạn):</strong>
 $$\text{MA}<em>{50} \text{ cắt lên trên } \text{MA}</em>{200}$$
@@ -125,15 +127,15 @@ $$\text{MA}<em>{50} \text{ cắt xuống dưới } \text{MA}</em>{200}$$</p>
 </li>
 </ul>
 <hr>
-<h3>3. Tỷ Lệ Rủi Ro / Lợi Nhuận (Risk / Reward Ratio - R:R)</h3>
+<h5>3. Tỷ Lệ Rủi Ro / Lợi Nhuận (Risk / Reward Ratio - R:R)</h5>
 <p>Công thức tối ưu hóa điểm vào lệnh trước khi giải ngân:</p>
 <p>$$\text{Tỷ lệ R:R} = \frac{\text{Mục tiêu chốt lời (Take Profit)} - \text{Giá mua (Entry)}}{\text{Giá mua (Entry)} - \text{Ngưỡng cắt lỗ (Stop Loss)}} \ge 2.0$$</p>
 <hr>
-<h2>CHƯƠNG 5: CÁC MÔ HÌNH ĐỊNH GIÁ NÂNG CAO</h2>
-<h3>1. Mô Hình Chiết Khấu Cổ Tức Gordon (Dividend Discount Model - DDM)</h3>
+<h4>CHƯƠNG 5: CÁC MÔ HÌNH ĐỊNH GIÁ NÂNG CAO</h4>
+<h5>1. Mô Hình Chiết Khấu Cổ Tức Gordon (Dividend Discount Model - DDM)</h5>
 <p>$$V = \frac{D_1}{r - g} = \frac{D_0 \times (1 + g)}{r - g}$$</p>
 <hr>
-<h3>2. Mô Hình Chiết Khấu Dòng Tiền Tự Do Doanh Nghiệp (FCFF - Free Cash Flow to Firm)</h3>
+<h5>2. Mô Hình Chiết Khấu Dòng Tiền Tự Do Doanh Nghiệp (FCFF - Free Cash Flow to Firm)</h5>
 <p>$$V_{\text{Enterprise}} = \sum_{t=1}^{N} \frac{\text{FCFF}_t}{(1 + \text{WACC})^t} + \frac{\text{Terminal Value}_N}{(1 + \text{WACC})^N}$$</p>
 <hr>
 </div>
