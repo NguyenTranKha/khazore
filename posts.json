@@ -8,10 +8,10 @@
     "date": "2026-09-13",
     "dateLabel": "13 tháng 9, 2026",
     "readingMinutes": 5,
-    "image": "img/sai-gon-hom-nay-van-vay.HEIC",
+    "image": "img/sai-gon-hom-nay-van-vay.jpg",
     "imageAlt": "Phố Sài Gòn sau mưa, kính cửa còn ướt",
     "cover": "moss",
-    "featured": false
+    "featured": true
   },
   {
     "id": "2",
@@ -39,7 +39,7 @@
     "image": "img/doc-cham-doc-lai.jpg",
     "imageAlt": "Đọc chậm, đọc lại",
     "cover": "ink",
-    "featured": true
+    "featured": false
   },
   {
     "id": "4",
