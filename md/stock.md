@@ -3,7 +3,7 @@ title: Cẩm nang chứng khoán
 date: 2026-09-13
 category: Chứng khoán
 excerpt: EPS, P/E, P/B và số Graham — các công thức định giá viết lại cho dễ đọc.
-cover: ink
+cover: draft
 image: https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f
 alt: Màn hình biểu đồ chứng khoán
 readingMinutes: 12
