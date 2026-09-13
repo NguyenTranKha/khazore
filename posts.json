@@ -1,6 +1,20 @@
 [
   {
     "id": "1",
+    "slug": "stock",
+    "title": "Stock",
+    "excerpt": "Một câu dẫn ngắn hiện trên trang chủ.",
+    "category": "Chứng khoán",
+    "date": "2026-09-13",
+    "dateLabel": "13 tháng 9, 2026",
+    "readingMinutes": 5,
+    "image": "img/https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f",
+    "imageAlt": "Mô tả ảnh bìa",
+    "cover": "ink",
+    "featured": false
+  },
+  {
+    "id": "2",
     "slug": "viet-ben-ly-den-da",
     "title": "Viết bên ly đen đá",
     "excerpt": "Cà phê đen đá không phải thức uống. Ở Sài Gòn, nó là chỗ ngồi, là khoảng lặng giữa hai việc, là lúc chữ bắt đầu chịu ra.",
@@ -14,7 +28,7 @@
     "featured": false
   },
   {
-    "id": "2",
+    "id": "3",
     "slug": "doc-cham-doc-lai",
     "title": "Đọc chậm, đọc lại",
     "excerpt": "Một cuốn sách hay không cần đọc nhanh. Nó cần chỗ trống giữa các câu, và vài buổi chiều để quay lại trang đã gấp.",
@@ -28,7 +42,7 @@
     "featured": false
   },
   {
-    "id": "3",
+    "id": "4",
     "slug": "so-tay-va-muc-xanh",
     "title": "Sổ tay và mực xanh",
     "excerpt": "Tôi không tin ghi chú trên điện thoại. Chữ viết tay giữ được nhịp thở của buổi đó, kể cả khi nội dung chẳng còn quan trọng.",
