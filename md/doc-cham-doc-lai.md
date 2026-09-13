@@ -4,7 +4,7 @@ date: 2026-08-28
 category: Đọc
 excerpt: Một cuốn sách hay không cần đọc nhanh. Nó cần chỗ trống giữa các câu, và vài buổi chiều để quay lại trang đã gấp.
 cover: ink
-featured: true
+featured: false
 imageAlt: img/doc-cham-doc-lai.jpg
 readingMinutes: 6
 ---

@@ -4,10 +4,10 @@ date: 2026-09-13
 category: Ở Sài Gòn
 excerpt: Ngoài kia mưa nặng trĩu. Trong tôi thì không. Một chương sách, một trang blog, rồi đoạn đường dưới sáu mươi — nón kín, mặt không rát.
 cover: moss
-image: img/sai-gon-hom-nay-van-vay.HEIC
+image: img/sai-gon-hom-nay-van-vay.jpg
 alt: Phố Sài Gòn sau mưa, kính cửa còn ướt
 readingMinutes: 5
-featured: false
+featured: true
 draft: false
 ---
 
