@@ -34,6 +34,7 @@
   <p class="hero__line" id="hero-line">Viết chậm về những thứ đáng nhớ</p>
   <p class="hero__dek" id="hero-dek">Một góc viết từ Sài Gòn. Ít bài, đọc chậm, không vội xuất bản cho đủ lịch.</p>
 </section>
+<!-- POSTS:FEATURED:START -->
 <section class="featured wrap" aria-labelledby="noi-bat-heading">
 <article>
 <a class="cover-btn" href="bai/viet-ben-ly-den-da.html" aria-label="Đọc bài: Viết bên ly đen đá"><div class="cover cover--clay">
@@ -46,7 +47,10 @@
 </div>
 </article>
 </section>
+<!-- POSTS:FEATURED:END -->
 <section id="bai-viet" class="posts wrap" aria-labelledby="bai-moi-heading">
+<h2 id="bai-moi-heading" class="kicker">Bài mới</h2>
+<!-- POSTS:LIST:START -->
 <ul class="grid" id="posts-root"><li data-category="Đọc">
 <article class="card">
 <a class="cover-btn" href="bai/doc-cham-doc-lai.html" aria-label="Đọc bài: Đọc chậm, đọc lại"><div class="cover cover--ink">
@@ -73,22 +77,4 @@
 <script src="js/theme.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/index_content.js"></script>
-<script>
-(function () {
-  var lineEl = document.getElementById("hero-line");
-  var dekEl = document.getElementById("hero-dek");
-  var meta = document.querySelector('meta[name="description"]');
-
-  fetch("index_content.json", { cache: "no-cache" })
-    .then(function (res) { return res.ok ? res.json() : Promise.reject(res.status); })
-    .then(function (data) {
-      if (data.line && lineEl) lineEl.textContent = data.line;
-      if (data.dek && dekEl) dekEl.textContent = data.dek;
-      if (data.description && meta) meta.setAttribute("content", data.description);
-    })
-    .catch(function () {
-      /* giữ text cứng trong HTML nếu JSON lỗi / chưa có file */
-    });
-})();
-</script>
 </body></html>
