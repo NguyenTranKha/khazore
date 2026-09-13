@@ -7,8 +7,8 @@ cover: moss
 image: img/sai-gon-hom-nay-van-vay.jpg
 alt: Phố Sài Gòn sau mưa, kính cửa còn ướt
 readingMinutes: 5
-featured: true
-draft: false
+featured: false
+draft: true
 ---
 
 Sài Gòn hôm nay vẫn vậy — nặng trĩu những cơn mưa, mà mấy ngày nay trời không chịu tạnh. trời âm u nnhưng lòng tôi không như thế.
