@@ -1,6 +1,20 @@
 [
   {
     "id": "1",
+    "slug": "ky-luat",
+    "title": "Kỷ Luật",
+    "excerpt": "Rập khuôn có phải là một điều gì đó tệ.",
+    "category": "Ghi chép",
+    "date": "2026-09-14",
+    "dateLabel": "14 tháng 9, 2026",
+    "readingMinutes": 5,
+    "image": "img/viet-khi-thanh-pho-ngu.jpg",
+    "imageAlt": "Mô tả ảnh bìa",
+    "cover": "clay",
+    "featured": false
+  },
+  {
+    "id": "2",
     "slug": "bancham",
     "title": "Nhớ bạn Châm",
     "excerpt": "Một câu dẫn ngắn hiện trên trang chủ.",
@@ -14,7 +28,7 @@
     "featured": false
   },
   {
-    "id": "2",
+    "id": "3",
     "slug": "hand-post",
     "title": "Bài viết bằng tay đầu tiên của tôi",
     "excerpt": "Lý do có blog này",
@@ -23,20 +37,6 @@
     "dateLabel": "13 tháng 9, 2026",
     "readingMinutes": 5,
     "image": "img/kha.jpg",
-    "imageAlt": "Mô tả ảnh bìa",
-    "cover": "clay",
-    "featured": false
-  },
-  {
-    "id": "3",
-    "slug": "ky-luat",
-    "title": "Lịch trình",
-    "excerpt": "Rập khuôn có phải là một điều gì đó tệ.",
-    "category": "Ghi chép",
-    "date": "2026-09-13",
-    "dateLabel": "13 tháng 9, 2026",
-    "readingMinutes": 5,
-    "image": "img/ky-luat.png",
     "imageAlt": "Mô tả ảnh bìa",
     "cover": "clay",
     "featured": false
