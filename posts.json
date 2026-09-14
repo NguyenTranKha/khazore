@@ -29,6 +29,20 @@
   },
   {
     "id": "3",
+    "slug": "ky-luat",
+    "title": "Lịch trình",
+    "excerpt": "Rập khuôn có phải là một điều gì đó tệ.",
+    "category": "Ghi chép",
+    "date": "2026-09-13",
+    "dateLabel": "13 tháng 9, 2026",
+    "readingMinutes": 5,
+    "image": "img/ky-luat.png",
+    "imageAlt": "Mô tả ảnh bìa",
+    "cover": "clay",
+    "featured": false
+  },
+  {
+    "id": "4",
     "slug": "viet-ben-ly-den-da",
     "title": "Viết bên ly đen đá",
     "excerpt": "Cà phê đen đá không phải thức uống. Ở Sài Gòn, nó là chỗ ngồi, là khoảng lặng giữa hai việc, là lúc chữ bắt đầu chịu ra.",
@@ -42,7 +56,7 @@
     "featured": false
   },
   {
-    "id": "4",
+    "id": "5",
     "slug": "doc-cham-doc-lai",
     "title": "Đọc chậm, đọc lại",
     "excerpt": "Một cuốn sách hay không cần đọc nhanh. Nó cần chỗ trống giữa các câu, và vài buổi chiều để quay lại trang đã gấp.",
@@ -56,7 +70,7 @@
     "featured": false
   },
   {
-    "id": "5",
+    "id": "6",
     "slug": "so-tay-va-muc-xanh",
     "title": "Sổ tay và mực xanh",
     "excerpt": "Tôi không tin ghi chú trên điện thoại. Chữ viết tay giữ được nhịp thở của buổi đó, kể cả khi nội dung chẳng còn quan trọng.",
