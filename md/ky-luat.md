@@ -1,10 +1,10 @@
 ---
-title: Lịch trình
-date: 2026-09-13
+title: Kỷ Luật
+date: 2026-09-14
 category: Ghi chép
 excerpt: Rập khuôn có phải là một điều gì đó tệ.
 cover: clay
-image: img/ky-luat.png
+image: img/viet-khi-thanh-pho-ngu.jpg
 alt: Mô tả ảnh bìa
 readingMinutes: 5
 featured: false
