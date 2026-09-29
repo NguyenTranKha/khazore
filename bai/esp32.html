@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>esp32 — Nguyễn Trần Kha</title>
+<meta name="description" content="Phân loại ESP32: Hiểu họ chip để chọn đúng cho dự án" />
+<meta name="theme-color" content="#F6F3EE" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="stylesheet" href="../css/fonts.css" />
+<link rel="stylesheet" href="../css/styles.css" />
+<script>
+(function(){try{var t=localStorage.getItem("muc-lang-theme");if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}})();
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="sr-only" href="#noi-dung">Bỏ qua đến nội dung</a>
+  <div class="wrap site-header__inner">
+    <a class="logo title-link" href="../index.html">Nguyễn Trần Kha</a>
+    <nav class="nav" aria-label="Chính"><ul>
+      <li><a class="title-link" href="../index.html#chu-de">Stories</a></li>
+      <li><a class="title-link" href="../index.html#ve-toi">About me</a></li>
+    </ul></nav>
+    <button type="button" class="theme-toggle" data-theme-toggle aria-label="Chuyển sang giao diện tối">
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 3v1.5M12 19.5V21M4.93 4.93l1.06 1.06M18.01 18.01l1.06 1.06M3 12h1.5M19.5 12H21M4.93 19.07l1.06-1.06M18.01 5.99l1.06-1.06"/></svg>
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 7 7 0 0 0 21 14.5z"/></svg>
+</button>
+  </div>
+</header>
+<main id="noi-dung">
+<article class="article">
+<a class="article__back title-link" href="../index.html">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+Tất cả bài viết
+</a>
+<p class="article__cat">Ghi chép</p>
+<h1 class="article__title">esp32</h1>
+<p class="article__meta"><time datetime="2026-09-29">29 tháng 9, 2026</time> · 7 phút đọc</p>
+<div class="cover cover--clay">
+<img src="../img/esp32.jpg" alt="esp32" width="1400" height="788" />
+</div>
+<div class="article__body measure">
+<h1>Phân loại ESP32: Hiểu họ chip để chọn đúng cho dự án</h1>
+<p>ESP32 ban đầu chỉ là một SoC Wi-Fi + Bluetooth ra mắt năm 2016. Đến 2026, “ESP32” đã thành cả một họ chip: khác kiến trúc CPU, khác radio, khác mức tiêu thụ và khác mục tiêu sản phẩm. Chọn sai dòng thường dẫn tới thiếu Bluetooth Classic, thiếu USB, thiếu Thread/Zigbee, hoặc dư công suất và giá.</p>
+<p>Cách phân loại thực tế nhất là theo <strong>series</strong> của Espressif, rồi mới xét chip cụ thể và module (WROOM, MINI, WROVER…).</p>
+<h2>1. Bốn nhóm chính trong họ ESP32a</h2>
+<table>
+<thead>
+<tr>
+<th>Series</th>
+<th>Ý nghĩa tên</th>
+<th>Kiến trúc điển hình</th>
+<th>Vai trò</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ESP32 gốc</strong></td>
+<td>Thế hệ đầu</td>
+<td>Xtensa LX6</td>
+<td>Đa năng, Bluetooth Classic, Ethernet MAC</td>
+</tr>
+<tr>
+<td><strong>S (Secure / Super)</strong></td>
+<td>Hiệu năng + USB / AI</td>
+<td>Xtensa LX7</td>
+<td>USB OTG, camera, LCD, vector AI</td>
+</tr>
+<tr>
+<td><strong>C (Cost / Connectivity)</strong></td>
+<td>Giá tốt, RISC-V</td>
+<td>RISC-V</td>
+<td>Thay ESP8266, Wi-Fi 6, Matter</td>
+</tr>
+<tr>
+<td><strong>H (IEEE 802.15.4)</strong></td>
+<td>Mesh, không Wi-Fi</td>
+<td>RISC-V</td>
+<td>Zigbee / Thread / Matter endpoint</td>
+</tr>
+<tr>
+<td><strong>P (Performance)</strong></td>
+<td>MCU mạnh, HMI</td>
+<td>RISC-V dual-core</td>
+<td>Màn hình, camera, video — thường không có Wi-Fi tích hợp</td>
+</tr>
+</tbody></table>
+<p>Espressif đang chuyển dần sang RISC-V. Xtensa còn ở ESP32 gốc, S2, S3; hầu hết chip mới (C3, C5, C6, H2, P4, S31) dùng RISC-V.</p>
+<h2>2. Từng dòng chip</h2>
+<h3>ESP32 gốc (Classic)</h3>
+<ul>
+<li>Dual-core Xtensa LX6, tối đa 240 MHz, ~520 KB SRAM.</li>
+<li>Wi-Fi 4 (2.4 GHz) + <strong>Bluetooth Classic 4.2</strong> + BLE.</li>
+<li>Ethernet MAC (cần PHY ngoài), DAC 8-bit, touch, nhiều tutorial nhất.</li>
+<li>Vẫn là lựa chọn nếu cần A2DP/SPP, Ethernet có sẵn, hoặc port code cũ.</li>
+</ul>
+<p>Hạn chế: không USB native, Wi-Fi chỉ 2.4 GHz 802.11n, không vector AI như S3.</p>
+<h3>ESP32-S2</h3>
+<ul>
+<li>Single-core Xtensa LX7 240 MHz, <del>320 KB SRAM, nhiều GPIO (</del>43).</li>
+<li>Chỉ Wi-Fi 4. <strong>Không Bluetooth</strong>.</li>
+<li>USB OTG native, DAC, bảo mật tốt.</li>
+<li>Phù hợp USB gadget, thiết bị chỉ Wi-Fi. Nhiều module MINI-1 cũ đã NRND; MINI-2 / SOLO-2 còn dùng.</li>
+</ul>
+<h3>ESP32-S3</h3>
+<ul>
+<li>Dual-core Xtensa LX7 240 MHz, 512 KB SRAM, GPIO ~45.</li>
+<li>Wi-Fi 4 + BLE 5, USB OTG, camera DVP, LCD RGB, lệnh vector cho TinyML.</li>
+<li>“Flagship maker” 2021–2026: camera, giọng nói, GUI nhẹ, PSRAM octal.</li>
+</ul>
+<p>Không có Bluetooth Classic, không Zigbee/Thread, Wi-Fi vẫn là Wi-Fi 4.</p>
+<h3>ESP32-C2 (ESP8684)</h3>
+<ul>
+<li>RISC-V single-core <del>120 MHz, SRAM nhỏ, GPIO ít (</del>14).</li>
+<li>Wi-Fi 4 + BLE 5, giá thấp nhất.</li>
+<li>Thay ESP8266 cho node đơn giản, sản xuất số lượng lớn.</li>
+</ul>
+<h3>ESP32-C3</h3>
+<ul>
+<li>RISC-V 160 MHz, ~400 KB SRAM, GPIO ~16–22.</li>
+<li>Wi-Fi 4 + BLE 5, USB Serial/JTAG, tiêu thụ thấp, giá rẻ.</li>
+<li>Workhorse IoT pin, MQTT, cảm biến, thay 8266 “có BLE”.</li>
+</ul>
+<h3>ESP32-C6</h3>
+<ul>
+<li>RISC-V HP 160 MHz + lõi LP.</li>
+<li><strong>Wi-Fi 6 (2.4 GHz)</strong> + BLE 5.3 + <strong>IEEE 802.15.4</strong> (Zigbee + Thread).</li>
+<li>Chip Matter phổ biến: vừa Wi-Fi vừa mesh.</li>
+</ul>
+<h3>ESP32-C5 / C61</h3>
+<ul>
+<li>C5: Wi-Fi 6 <strong>dual-band 2.4 + 5 GHz</strong>, BLE, 802.15.4 — khi băng 2.4 GHz quá đông.</li>
+<li>C61: Wi-Fi 6 2.4 GHz + BLE, <strong>không</strong> 802.15.4 — bản “gọn” hơn C6.</li>
+</ul>
+<h3>ESP32-H2 (và H4)</h3>
+<ul>
+<li>RISC-V ~96 MHz, <strong>không Wi-Fi</strong>.</li>
+<li>BLE + 802.15.4. Endpoint pin cúc áo, bóng đèn Zigbee/Thread, Matter over Thread.</li>
+<li>H4 hướng BLE mới hơn (LE Audio, direction finding) — ít phổ biến hơn H2.</li>
+</ul>
+<h3>ESP32-P4</h3>
+<ul>
+<li>Dual-core RISC-V tới <del>400 MHz, SRAM lớn (</del>768 KB), PSRAM in-package 16/32 MB.</li>
+<li>MIPI DSI/CSI, JPEG, xử lý ảnh/video, USB 2.0 HS, Ethernet.</li>
+<li><strong>Không Wi-Fi/BT tích hợp</strong> — thường ghép C6/H2 làm radio.</li>
+<li>HMI công nghiệp, gateway, multimedia.</li>
+</ul>
+<h3>ESP32-S31 (mới công bố)</h3>
+<p>Không phải bản vá S3. Dual-core RISC-V <del>320 MHz, Wi-Fi 6, BLE 5.4 <strong>+ Classic</strong>, 802.15.4, USB HS, Ethernet Gigabit, nhiều GPIO (</del>60), tăng tốc multimedia/AI. Dành cho gateway/đa giao thức; S3 vẫn hợp bài toán giá.</p>
+<h2>3. Bảng so sánh nhanh</h2>
+<table>
+<thead>
+<tr>
+<th>Chip</th>
+<th>CPU</th>
+<th>Xung</th>
+<th>Wi-Fi</th>
+<th>BT Classic</th>
+<th>BLE</th>
+<th>802.15.4</th>
+<th>USB</th>
+<th>Điểm mạnh</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ESP32</td>
+<td>Xtensa dual</td>
+<td>240</td>
+<td>4</td>
+<td>Có</td>
+<td>4.2</td>
+<td>Không</td>
+<td>Không</td>
+<td>Classic BT, Ethernet, cộng đồng</td>
+</tr>
+<tr>
+<td>S2</td>
+<td>Xtensa single</td>
+<td>240</td>
+<td>4</td>
+<td>Không</td>
+<td>Không</td>
+<td>Không</td>
+<td>OTG</td>
+<td>USB, GPIO nhiều</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>Xtensa dual</td>
+<td>240</td>
+<td>4</td>
+<td>Không</td>
+<td>5.0</td>
+<td>Không</td>
+<td>OTG</td>
+<td>AI, camera, LCD</td>
+</tr>
+<tr>
+<td>C2</td>
+<td>RISC-V</td>
+<td>120</td>
+<td>4</td>
+<td>Không</td>
+<td>5</td>
+<td>Không</td>
+<td>Không</td>
+<td>Rẻ</td>
+</tr>
+<tr>
+<td>C3</td>
+<td>RISC-V</td>
+<td>160</td>
+<td>4</td>
+<td>Không</td>
+<td>5</td>
+<td>Không</td>
+<td>Serial/JTAG</td>
+<td>Pin + giá</td>
+</tr>
+<tr>
+<td>C6</td>
+<td>RISC-V HP+LP</td>
+<td>160</td>
+<td><strong>6</strong></td>
+<td>Không</td>
+<td>5.3</td>
+<td>Có</td>
+<td>Serial/JTAG</td>
+<td>Matter / smart home</td>
+</tr>
+<tr>
+<td>C5</td>
+<td>RISC-V</td>
+<td>240</td>
+<td><strong>6 dual-band</strong></td>
+<td>Không</td>
+<td>Có</td>
+<td>Có</td>
+<td>Serial/JTAG</td>
+<td>5 GHz</td>
+</tr>
+<tr>
+<td>H2</td>
+<td>RISC-V</td>
+<td>96</td>
+<td>Không</td>
+<td>Không</td>
+<td>5.3</td>
+<td>Có</td>
+<td>Serial/JTAG</td>
+<td>Mesh không Wi-Fi</td>
+</tr>
+<tr>
+<td>P4</td>
+<td>RISC-V dual</td>
+<td>400</td>
+<td>Không*</td>
+<td>Không</td>
+<td>Không</td>
+<td>Không</td>
+<td>HS</td>
+<td>HMI / video</td>
+</tr>
+<tr>
+<td>S31</td>
+<td>RISC-V dual</td>
+<td>320</td>
+<td>6</td>
+<td>Có</td>
+<td>5.4</td>
+<td>Có</td>
+<td>HS</td>
+<td>Đa protocol + hiệu năng</td>
+</tr>
+</tbody></table>
+<p>*P4 cần chip radio rời nếu cần không dây.</p>
+<h2>4. Phân loại module (thứ hay thấy trên board)</h2>
+<p>Chip SoC khác module đã đóng RF + flash.</p>
+<ul>
+<li><strong>WROOM</strong>: module chuẩn, anten PCB, flash 4–16 MB.</li>
+<li><strong>WROVER</strong>: thêm PSRAM (thường 8 MB) — camera, buffer lớn; board dài hơn.</li>
+<li><strong>MINI</strong>: nhỏ, flash/PSRAM in-package, ít chân hơn.</li>
+<li><strong>PICO / SiP</strong>: dao động + flash (đôi khi PSRAM) trong một gói.</li>
+<li>Hậu tố <strong>U</strong>: connector U.FL thay anten PCB.</li>
+<li>Số sau tên (WROOM-1 / WROOM-2): khác dung lượng flash/PSRAM.</li>
+</ul>
+<p>Ví dụ: ESP32-S3-WROOM-1 vs WROOM-2 khác PSRAM/flash; ESP32-C6-MINI-1 gọn hơn WROOM-1.</p>
+<p>Naming chip gốc kiểu <code>ESP32-D0WD-V3</code>:</p>
+<ul>
+<li><strong>D/U/S</strong>: Dual / (lịch sử U) / Single core</li>
+<li><strong>0</strong>: không flash trong chip</li>
+<li><strong>WD</strong>: Wi-Fi + Bluetooth dual mode</li>
+<li><strong>R2 / H</strong>: PSRAM hoặc dải nhiệt độ</li>
+<li><strong>V3</strong>: revision silicon</li>
+</ul>
+<h2>5. Chọn theo nhu cầu</h2>
+<ul>
+<li>Mới học / Arduino / ESP-NOW / loa BT Classic → <strong>ESP32 gốc</strong>.</li>
+<li>Camera, TinyML, màn hình, USB → <strong>S3</strong>.</li>
+<li>Cảm biến pin, giá rẻ, Wi-Fi + BLE → <strong>C3</strong>.</li>
+<li>Nhà thông minh Matter, Thread, Zigbee + vẫn cần Wi-Fi → <strong>C6</strong>.</li>
+<li>Node mesh chỉ Zigbee/Thread, không Wi-Fi → <strong>H2</strong>.</li>
+<li>Môi trường 2.4 GHz nhiễu, cần 5 GHz → <strong>C5</strong>.</li>
+<li>Màn hình MIPI, encode video, gateway có radio rời → <strong>P4</strong>.</li>
+<li>Cần Classic BT trên chip mới + Wi-Fi 6 + 802.15.4 → chờ/đánh giá <strong>S31</strong>.</li>
+</ul>
+<p>Cùng một SoC, board dev có thể khác nhau rất nhiều về chân GPIO “thật dùng được”, ổn áp, LED thừa làm tăng dòng sleep. Datasheet chip không thay được schematic board.</p>
+<h2>6. Ghi chú thực tế khi làm việc</h2>
+<ul>
+<li>ESP-IDF và Arduino-ESP32 hỗ trợ gần như cả họ; version IDF tối thiểu khác nhau (C6/H2/P4 cần IDF mới hơn S3).</li>
+<li>Code GPIO/ADC/I2S không copy nguyên giữa series: số kênh, có/không DAC, USB stack khác nhau.</li>
+<li>“ESP32” trên Shopee thường là WROOM-32 gốc hoặc clone; đọc rõ S3/C3/C6 trên silkscreen và chip marking.</li>
+</ul>
+<p>Họ ESP32 không còn một chip đa năng duy nhất. Phân loại đúng series trước, rồi mới chọn flash/PSRAM và form module — đó là cách tránh mua nhầm và thiết kế lại phần RF/nguồn sau này.</p>
+</div>
+</article>
+</main>
+<footer class="site-footer">
+  <div class="wrap site-footer__inner">
+    <p>© 2026 Nguyễn Trần Kha</p>
+    <ul>
+      <li><a class="title-link" href="../index.html#ve-toi">About me</a></li>
+    </ul>
+  </div>
+</footer>
+<script src="../js/theme.js"></script>
+</body></html>

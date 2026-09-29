@@ -1,6 +1,20 @@
 [
   {
     "id": "1",
+    "slug": "esp32",
+    "title": "esp32",
+    "excerpt": "Phân loại ESP32: Hiểu họ chip để chọn đúng cho dự án",
+    "category": "Ghi chép",
+    "date": "2026-09-29",
+    "dateLabel": "29 tháng 9, 2026",
+    "readingMinutes": 7,
+    "image": "img/esp32.jpg",
+    "imageAlt": "esp32",
+    "cover": "clay",
+    "featured": false
+  },
+  {
+    "id": "2",
     "slug": "ky-luat",
     "title": "Kỷ Luật",
     "excerpt": "Rập khuôn có phải là một điều gì đó tệ.",
@@ -14,7 +28,7 @@
     "featured": false
   },
   {
-    "id": "2",
+    "id": "3",
     "slug": "bancham",
     "title": "Nhớ bạn Châm",
     "excerpt": "Một câu dẫn ngắn hiện trên trang chủ.",
@@ -28,7 +42,7 @@
     "featured": false
   },
   {
-    "id": "3",
+    "id": "4",
     "slug": "hand-post",
     "title": "Bài viết bằng tay đầu tiên của tôi",
     "excerpt": "Lý do có blog này",
@@ -42,7 +56,7 @@
     "featured": false
   },
   {
-    "id": "4",
+    "id": "5",
     "slug": "viet-ben-ly-den-da",
     "title": "Viết bên ly đen đá",
     "excerpt": "Cà phê đen đá không phải thức uống. Ở Sài Gòn, nó là chỗ ngồi, là khoảng lặng giữa hai việc, là lúc chữ bắt đầu chịu ra.",
@@ -56,7 +70,7 @@
     "featured": false
   },
   {
-    "id": "5",
+    "id": "6",
     "slug": "doc-cham-doc-lai",
     "title": "Đọc chậm, đọc lại",
     "excerpt": "Một cuốn sách hay không cần đọc nhanh. Nó cần chỗ trống giữa các câu, và vài buổi chiều để quay lại trang đã gấp.",
@@ -70,7 +84,7 @@
     "featured": false
   },
   {
-    "id": "6",
+    "id": "7",
     "slug": "so-tay-va-muc-xanh",
     "title": "Sổ tay và mực xanh",
     "excerpt": "Tôi không tin ghi chú trên điện thoại. Chữ viết tay giữ được nhịp thở của buổi đó, kể cả khi nội dung chẳng còn quan trọng.",
