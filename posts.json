@@ -2,14 +2,14 @@
   {
     "id": "1",
     "slug": "esp32",
-    "title": "esp32",
-    "excerpt": "Phân loại ESP32: Hiểu họ chip để chọn đúng cho dự án",
+    "title": "ESP32",
+    "excerpt": "ESP32 ban đầu chỉ là một SoC Wi-Fi kèm Bluetooth ra mắt năm 2016",
     "category": "Ghi chép",
     "date": "2026-09-29",
     "dateLabel": "29 tháng 9, 2026",
-    "readingMinutes": 7,
+    "readingMinutes": 5,
     "image": "img/esp32.jpg",
-    "imageAlt": "esp32",
+    "imageAlt": "ESP32",
     "cover": "clay",
     "featured": false
   },
