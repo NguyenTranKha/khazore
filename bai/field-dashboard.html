@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIELD — Bảng điều khiển sóng</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #141311;
+      --bg-2: #1b1a17;
+      --surface: #21201c;
+      --surface-2: #2a2823;
+      --line: #34322c;
+      --line-soft: #2c2a25;
+      --ink: #ece6d9;
+      --ink-dim: #9a9488;
+      --muted: #6f6a61;
+      --moss: #7d9b78;
+      --moss-dim: #4d6249;
+      --moss-glow: rgba(125, 155, 120, 0.18);
+      --clay: #c4a07a;
+      --clay-dim: #8a6d4e;
+      --rust: #c17a5a;
+      --sky: #7aa3b0;
+      --good: #8fb37a;
+      --warn: #c9a35a;
+      --bad: #c46b5a;
+      --shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+      --radius: 14px;
+      --sidebar: 232px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: "Outfit", system-ui, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(125, 155, 120, 0.07), transparent 50%),
+        radial-gradient(900px 500px at 110% 10%, rgba(196, 160, 122, 0.06), transparent 45%),
+        var(--bg);
+      color: var(--ink);
+      letter-spacing: 0.01em;
+      overflow: hidden;
+    }
+
+    button, input, select, textarea { font-family: inherit; color: inherit; }
+    button { cursor: pointer; }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .app {
+      display: grid;
+      grid-template-columns: var(--sidebar) 1fr;
+      height: 100%;
+    }
+
+    /* ——— Sidebar ——— */
+    .sidebar {
+      border-right: 1px solid var(--line-soft);
+      background: linear-gradient(180deg, #181714 0%, #141311 100%);
+      display: flex;
+      flex-direction: column;
+      padding: 22px 16px 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 8px 22px;
+    }
+    .mark {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(145deg, #8eab86, #4e654b);
+      display: grid; place-items: center;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 8px 18px rgba(77, 98, 73, 0.35);
+    }
+    .mark svg { width: 18px; height: 18px; }
+    .brand h1 {
+      font-family: "Instrument Serif", serif;
+      font-size: 26px;
+      font-weight: 400;
+      line-height: 1;
+    }
+    .brand small {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .nav { display: flex; flex-direction: column; gap: 4px; }
+    .nav button {
+      display: flex; align-items: center; gap: 12px;
+      width: 100%;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--ink-dim);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 400;
+      text-align: left;
+      transition: 0.18s ease;
+    }
+    .nav button svg { width: 18px; height: 18px; opacity: 0.8; flex-shrink: 0; }
+    .nav button:hover { background: var(--surface); color: var(--ink); }
+    .nav button.active {
+      background: var(--moss-glow);
+      border-color: rgba(125, 155, 120, 0.22);
+      color: var(--ink);
+    }
+    .nav button.active svg { opacity: 1; color: var(--moss); }
+
+    .sidebar-foot {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--line-soft);
+    }
+    .device-chip {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 10px;
+      border-radius: 12px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+    }
+    .pulse {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--good);
+      box-shadow: 0 0 0 0 rgba(143, 179, 122, 0.7);
+      animation: pulse 1.8s infinite;
+    }
+    .pulse.off { background: var(--muted); box-shadow: none; animation: none; }
+    @keyframes pulse {
+      70% { box-shadow: 0 0 0 8px rgba(143, 179, 122, 0); }
+    }
+    .device-chip .meta { font-size: 12px; line-height: 1.25; }
+    .device-chip .meta b { font-weight: 500; display: block; }
+    .device-chip .meta span { color: var(--muted); font-size: 11px; }
+
+    /* ——— Main ——— */
+    .main {
+      display: grid;
+      grid-template-rows: 64px 1fr 168px;
+      min-width: 0;
+    }
+
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 28px;
+      border-bottom: 1px solid var(--line-soft);
+      background: rgba(20, 19, 17, 0.72);
+      backdrop-filter: blur(10px);
+    }
+    .crumb {
+      display: flex; align-items: baseline; gap: 10px;
+    }
+    .crumb h2 {
+      font-family: "Instrument Serif", serif;
+      font-size: 26px;
+      font-weight: 400;
+    }
+    .crumb p { color: var(--ink-dim); font-size: 13px; }
+    .top-actions { display: flex; align-items: center; gap: 10px; }
+
+    .chip, .btn {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 12px;
+      color: var(--ink-dim);
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    .btn {
+      border-radius: 10px;
+      color: var(--ink);
+      transition: 0.15s ease;
+    }
+    .btn:hover { border-color: var(--moss-dim); background: var(--surface-2); }
+    .btn.primary {
+      background: var(--moss);
+      border-color: transparent;
+      color: #141311;
+      font-weight: 500;
+    }
+    .btn.primary:hover { filter: brightness(1.06); }
+    .btn.ghost { background: transparent; }
+    .btn.danger { color: var(--rust); border-color: rgba(193, 122, 90, 0.35); }
+    .btn.sm { padding: 6px 10px; font-size: 12px; border-radius: 8px; }
+    .btn.block { width: 100%; justify-content: center; }
+
+    .workspace {
+      overflow: auto;
+      padding: 22px 28px 18px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .stat label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .stat strong {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .stat em { font-style: normal; color: var(--ink-dim); font-size: 12px; margin-left: 6px; }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 14px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .card h3 {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 14px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .card h3 span.dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--moss);
+      display: inline-block;
+    }
+
+    .field { margin-bottom: 12px; }
+    .field label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .row { display: flex; gap: 8px; }
+    .row > * { flex: 1; }
+
+    input[type="text"], input[type="number"], select, textarea {
+      width: 100%;
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 9px 11px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--moss-dim); }
+    textarea {
+      min-height: 84px;
+      resize: vertical;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--moss);
+    }
+    .range-val {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      color: var(--clay);
+      min-width: 64px;
+      text-align: right;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th {
+      text-align: left;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+      padding: 0 8px 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--line-soft);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+    }
+    tr:last-child td { border-bottom: none; }
+    .ssid { font-family: "Outfit", sans-serif; font-weight: 500; }
+    .bars { color: var(--moss); letter-spacing: -1px; }
+    .lock { color: var(--clay); }
+
+    .tag {
+      display: inline-flex;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid var(--line);
+      color: var(--ink-dim);
+    }
+    .tag.ok { color: var(--good); border-color: rgba(143,179,122,.3); }
+    .tag.warn { color: var(--warn); border-color: rgba(201,163,90,.3); }
+
+    .hex {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 18px;
+      letter-spacing: 0.08em;
+      color: var(--clay);
+    }
+
+    canvas.spectrum {
+      width: 100%;
+      height: 140px;
+      background: var(--bg-2);
+      border-radius: 10px;
+      border: 1px solid var(--line);
+    }
+
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+
+    /* Log */
+    .logdock {
+      border-top: 1px solid var(--line-soft);
+      background: #12110f;
+      display: flex;
+      flex-direction: column;
+    }
+    .loghead {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 16px;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .log {
+      flex: 1;
+      overflow: auto;
+      padding: 10px 16px 14px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      line-height: 1.65;
+      color: #b7b0a4;
+    }
+    .log .t { color: var(--muted); margin-right: 8px; }
+    .log .ok { color: var(--good); }
+    .log .info { color: var(--sky); }
+    .log .warn { color: var(--warn); }
+    .log .err { color: var(--bad); }
+    .log .mod { color: var(--clay); }
+
+    /* Toast */
+    .toasts {
+      position: fixed; right: 20px; bottom: 188px;
+      display: flex; flex-direction: column; gap: 8px;
+      z-index: 20;
+    }
+    .toast {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      box-shadow: var(--shadow);
+      animation: in 0.25s ease;
+    }
+    @keyframes in { from { opacity: 0; transform: translateY(8px); } }
+
+    .empty {
+      color: var(--muted);
+      font-size: 13px;
+      padding: 18px 0;
+      text-align: center;
+    }
+
+    @media (max-width: 1080px) {
+      .stats, .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .app { grid-template-columns: 76px 1fr; }
+      .brand small, .brand h1, .nav button span.label, .device-chip .meta { display: none; }
+      .nav button { justify-content: center; padding: 12px; }
+      .sidebar { padding: 16px 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#141311" stroke-width="1.8">
+            <path d="M4 14c4-8 12-8 16 0" />
+            <path d="M7 16c2.6-4.5 7.4-4.5 10 0" />
+            <circle cx="12" cy="18.2" r="1.2" fill="#141311" stroke="none" />
+          </svg>
+        </div>
+        <div>
+          <h1>Field</h1>
+          <small>Kit điều khiển sóng</small>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="active" data-tab="overview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          <span class="label">Tổng quan</span>
+        </button>
+        <button data-tab="nrf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14"/><path d="M12 5v14"/><circle cx="12" cy="12" r="8"/></svg>
+          <span class="label">NRF24</span>
+        </button>
+        <button data-tab="nfc">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="3.5" width="14" height="17" rx="2.5"/><path d="M9 8.5c2.4-1.6 4.6-1.6 7 0"/><path d="M10 12c1.6-1 3.2-1 4.8 0"/><circle cx="12.4" cy="15.6" r="0.8" fill="currentColor" stroke="none"/></svg>
+          <span class="label">NFC</span>
+        </button>
+        <button data-tab="wifi">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4.5 10.2c4.2-4 10.8-4 15 0"/><path d="M7.4 13.2c2.6-2.5 6.6-2.5 9.2 0"/><path d="M10.3 16c1-1 2.4-1 3.4 0"/><circle cx="12" cy="18.4" r="1" fill="currentColor" stroke="none"/></svg>
+          <span class="label">Wi-Fi</span>
+        </button>
+        <button data-tab="rf">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 16c2-6 4-10 9-10s7 4 9 10"/><path d="M12 6v12"/><path d="M8 20h8"/></svg>
+          <span class="label">RF / Sub-GHz</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-foot">
+        <div class="device-chip">
+          <div class="pulse" id="linkPulse"></div>
+          <div class="meta">
+            <b id="devName">ESP32-S3 Field</b>
+            <span id="devState">WebSocket · chờ kết nối</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="main">
+      <header class="topbar">
+        <div class="crumb">
+          <h2 id="pageTitle">Tổng quan</h2>
+          <p id="pageSub">Bốn module trên một mặt kính.</p>
+        </div>
+        <div class="top-actions">
+          <span class="chip" id="clockChip">--:--:--</span>
+          <button class="btn ghost sm" id="btnConnect">Kết nối</button>
+          <button class="btn primary sm" id="btnScanQuick">Quét nhanh</button>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <!-- OVERVIEW -->
+        <div class="panel active" id="tab-overview">
+          <div class="stats">
+            <div class="stat"><label>NRF24</label><strong id="ovNrf">CH 76</strong><em>2 Mbps</em></div>
+            <div class="stat"><label>NFC</label><strong id="ovNfc">Sẵn sàng</strong><em>13.56 MHz</em></div>
+            <div class="stat"><label>Wi-Fi</label><strong id="ovWifi">12 AP</strong><em>lần quét cuối 00:00</em></div>
+            <div class="stat"><label>RF</label><strong id="ovRf">433.92</strong><em>MHz · ASK</em></div>
+          </div>
+          <div class="grid-2">
+            <div class="card">
+              <h3>Hoạt động gần đây <span class="dot"></span></h3>
+              <table>
+                <thead><tr><th>Thời gian</th><th>Module</th><th>Sự kiện</th></tr></thead>
+                <tbody id="recentBody">
+                  <tr><td>00:00:00</td><td>SYS</td><td>Dashboard khởi động · chế độ mô phỏng</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card">
+              <h3>Phím tắt</h3>
+              <table>
+                <tbody>
+                  <tr><td>1 – 5</td><td>Chuyển module</td></tr>
+                  <tr><td>S</td><td>Quét module đang mở</td></tr>
+                  <tr><td>C</td><td>Bật / tắt kết nối giả</td></tr>
+                  <tr><td>L</td><td>Xóa nhật ký</td></tr>
+                </tbody>
+              </table>
+              <p class="empty" style="text-align:left;padding-top:8px">Gắn firmware ESP32 bằng WebSocket <span class="tag">ws://192.168.4.1/ws</span> — mọi nút đã để sẵn hook <code>sendCmd()</code>.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- NRF -->
+        <div class="panel" id="tab-nrf">
+          <div class="grid-2">
+            <div class="card">
+              <h3>Cấu hình transceiver</h3>
+              <div class="grid-3">
+                <div class="field">
+                  <label>Kênh (0–125)</label>
+                  <input type="number" id="nrfCh" min="0" max="125" value="76" />
+                </div>
+                <div class="field">
+                  <label>Tốc độ</label>
+                  <select id="nrfRate">
+                    <option>250 kbps</option>
+                    <option selected>2 Mbps</option>
+                    <option>1 Mbps</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Công suất</label>
+                  <select id="nrfPwr">
+                    <option>MIN</option>
+                    <option>LOW</option>
+                    <option selected>HIGH</option>
+                    <option>MAX</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field">
+                <label>Địa chỉ pipe (5 byte hex)</label>
+                <input type="text" id="nrfAddr" value="E7 E7 E7 E7 E7" />
+              </div>
+              <div class="field">
+                <label>Payload TX</label>
+                <textarea id="nrfPayload">FIELD:ping 01</textarea>
+              </div>
+              <div class="actions">
+                <button class="btn primary sm" onclick="nrfSend()">Gửi gói</button>
+                <button class="btn sm" onclick="nrfListen()">Nghe RX</button>
+                <button class="btn sm" onclick="nrfApply()">Áp dụng cấu hình</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Gói nhận được</h3>
+              <div id="nrfRx" class="empty">Chưa có gói. Bấm Nghe RX.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NFC -->
+        <div class="panel" id="tab-nfc">
+          <div class="grid-2">
+            <div class="card">
+              <h3>Đầu đọc 13.56 MHz</h3>
+              <div class="field">
+                <label>UID</label>
+                <div class="hex" id="nfcUid">— — — — — — —</div>
+              </div>
+              <div class="row">
+                <div class="field">
+                  <label>Loại thẻ</label>
+                  <div class="tag ok" id="nfcType">chưa có thẻ</div>
+                </div>
+                <div class="field">
+                  <label>Dung lượng</label>
+                  <div id="nfcCap" style="padding-top:4px">—</div>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn primary sm" onclick="nfcScan()">Quét thẻ</button>
+                <button class="btn sm" onclick="nfcRead()">Đọc NDEF</button>
+                <button class="btn sm" onclick="nfcWrite()">Ghi NDEF</button>
+                <button class="btn danger sm" onclick="nfcWipe()">Xóa user data</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Bộ nhớ / NDEF</h3>
+              <textarea id="nfcMem" placeholder="Nội dung NDEF sẽ hiện ở đây">URI: https://
+TEXT: </textarea>
+              <p class="empty" style="text-align:left">Hỗ trợ MIFARE Classic / Ultralight / NTAG213–216 (tuỳ firmware PN532 / PN5180).</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- WIFI -->
+        <div class="panel" id="tab-wifi">
+          <div class="card">
+            <h3>
+              Điểm truy cập
+              <span style="display:flex;gap:8px;text-transform:none;letter-spacing:0">
+                <button class="btn sm" onclick="wifiScan()">Quét lại</button>
+              </span>
+            </h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>SSID</th><th>BSSID</th><th>Kênh</th><th>RSSI</th><th>Bảo mật</th>
+                </tr>
+              </thead>
+              <tbody id="wifiBody">
+                <tr><td colspan="5" class="empty">Chưa quét.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- RF -->
+        <div class="panel" id="tab-rf">
+          <div class="grid-2">
+            <div class="card">
+              <h3>Sub-GHz</h3>
+              <div class="field">
+                <label>Tần số (MHz)</label>
+                <div class="row" style="align-items:center">
+                  <input type="range" id="rfFreq" min="300" max="928" step="0.01" value="433.92" />
+                  <span class="range-val" id="rfFreqVal">433.92</span>
+                </div>
+              </div>
+              <div class="grid-3">
+                <div class="field">
+                  <label>Điều chế</label>
+                  <select id="rfMod">
+                    <option selected>ASK / OOK</option>
+                    <option>2-FSK</option>
+                    <option>GFSK</option>
+                    <option>LoRa</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Bitrate</label>
+                  <select id="rfBr">
+                    <option>1.2 kbps</option>
+                    <option selected>3.8 kbps</option>
+                    <option>9.6 kbps</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Preset</label>
+                  <select id="rfPreset" onchange="rfPreset()">
+                    <option value="433.92">Cổng / remote 433</option>
+                    <option value="315.00">OT 315</option>
+                    <option value="868.35">EU 868</option>
+                    <option value="915.00">ISM 915</option>
+                  </select>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn primary sm" onclick="rfListen()">Nghe</button>
+                <button class="btn sm" onclick="rfRecord()">Ghi</button>
+                <button class="btn sm" onclick="rfReplay()">Phát lại</button>
+                <button class="btn sm" onclick="rfSweep()">Quét phổ</button>
+              </div>
+            </div>
+            <div class="card">
+              <h3>Phổ gần tần số</h3>
+              <canvas class="spectrum" id="spec" width="640" height="140"></canvas>
+              <div class="empty" id="rfNote">Sẵn sàng · 433.92 MHz</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="logdock">
+        <div class="loghead">
+          <span>Nhật ký thiết bị</span>
+          <button class="btn ghost sm" onclick="clearLog()">Xóa</button>
+        </div>
+        <div class="log" id="log"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="toasts" id="toasts"></div>
+
+  <script>
+    /* ============================================================
+       Hook firmware thật:
+       const WS_URL = "ws://192.168.4.1/ws";
+       sendCmd() đã chuẩn JSON {mod, act, ...}
+       Khi connected=true, lệnh đi ra WebSocket thay vì mô phỏng.
+       ============================================================ */
+    const WS_URL = "ws://192.168.4.1/ws";
+    let ws = null;
+    let connected = false;
+    let current = "overview";
+
+    const titles = {
+      overview: ["Tổng quan", "Bốn module trên một mặt kính."],
+      nrf: ["NRF24L01+", "2.4 GHz · pipe, kênh, payload."],
+      nfc: ["NFC / RFID HF", "13.56 MHz · đọc ghi NDEF."],
+      wifi: ["Quét Wi-Fi", "802.11 probe · SSID, RSSI, kênh."],
+      rf: ["RF Sub-GHz", "300–928 MHz · ghi và phát lại."]
+    };
+
+    document.querySelectorAll(".nav button").forEach(btn => {
+      btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+    });
+
+    function switchTab(id) {
+      current = id;
+      document.querySelectorAll(".nav button").forEach(b => b.classList.toggle("active", b.dataset.tab === id));
+      document.querySelectorAll(".panel").forEach(p => p.classList.toggle("active", p.id === "tab-" + id));
+      document.getElementById("pageTitle").textContent = titles[id][0];
+      document.getElementById("pageSub").textContent = titles[id][1];
+    }
+
+    function now() {
+      return new Date().toLocaleTimeString("vi-VN", { hour12: false });
+    }
+
+    function log(mod, level, msg) {
+      const el = document.getElementById("log");
+      const line = document.createElement("div");
+      line.innerHTML = `<span class="t">${now()}</span><span class="mod">[${mod}]</span> <span class="${level}">${msg}</span>`;
+      el.appendChild(line);
+      el.scrollTop = el.scrollHeight;
+      const body = document.getElementById("recentBody");
+      if (body && body.children.length > 6) body.removeChild(body.lastElementChild);
+      if (body) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${now()}</td><td>${mod}</td><td>${msg}</td>`;
+        body.insertBefore(tr, body.firstChild);
+      }
+    }
+
+    function clearLog() {
+      document.getElementById("log").innerHTML = "";
+      log("SYS", "info", "Nhật ký đã xóa");
+    }
+
+    function toast(msg) {
+      const box = document.getElementById("toasts");
+      const t = document.createElement("div");
+      t.className = "toast";
+      t.textContent = msg;
+      box.appendChild(t);
+      setTimeout(() => t.remove(), 2600);
+    }
+
+    function sendCmd(payload) {
+      if (connected && ws && ws.readyState === 1) {
+        ws.send(JSON.stringify(payload));
+        log("TX", "info", JSON.stringify(payload));
+        return true;
+      }
+      return false;
+    }
+
+    /* ——— Connect (WebSocket + fallback mô phỏng) ——— */
+    document.getElementById("btnConnect").addEventListener("click", toggleConnect);
+
+    function toggleConnect() {
+      if (connected) {
+        if (ws) try { ws.close(); } catch(e) {}
+        setLink(false, "Đã ngắt");
+        return;
+      }
+      log("SYS", "info", "Đang mở " + WS_URL);
+      try {
+        ws = new WebSocket(WS_URL);
+        const killer = setTimeout(() => {
+          if (!connected) {
+            try { ws.close(); } catch(e) {}
+            setLink(true, "Mô phỏng · không thấy firmware");
+            toast("Không thấy ESP32 — chạy mô phỏng");
+            log("SYS", "warn", "Timeout WebSocket, chuyển mô phỏng");
+          }
+        }, 900);
+        ws.onopen = () => { clearTimeout(killer); setLink(true, "WebSocket · " + WS_URL); toast("Đã nối firmware"); };
+        ws.onmessage = (ev) => { log("RX", "ok", ev.data); handleRx(ev.data); };
+        ws.onerror = () => {};
+        ws.onclose = () => { if (connected) log("SYS", "warn", "Socket đóng"); };
+      } catch (e) {
+        setLink(true, "Mô phỏng");
+      }
+    }
+
+    function setLink(on, label) {
+      connected = on;
+      document.getElementById("linkPulse").classList.toggle("off", !on);
+      document.getElementById("devState").textContent = label;
+      document.getElementById("btnConnect").textContent = on ? "Ngắt" : "Kết nối";
+    }
+
+    function handleRx(raw) {
+      try {
+        const d = JSON.parse(raw);
+        if (d.mod === "wifi" && d.aps) renderWifi(d.aps);
+        if (d.mod === "nfc" && d.uid) renderNfc(d);
+        if (d.mod === "nrf" && d.rx) pushNrf(d.rx);
+      } catch (e) {}
+    }
+
+    /* ——— NRF ——— */
+    function nrfApply() {
+      const cfg = {
+        mod: "nrf", act: "cfg",
+        ch: +document.getElementById("nrfCh").value,
+        rate: document.getElementById("nrfRate").value,
+        pwr: document.getElementById("nrfPwr").value,
+        addr: document.getElementById("nrfAddr").value
+      };
+      sendCmd(cfg);
+      document.getElementById("ovNrf").textContent = "CH " + cfg.ch;
+      log("NRF", "ok", `Cấu hình ch=${cfg.ch} ${cfg.rate} ${cfg.pwr}`);
+      toast("Đã áp dụng NRF");
+    }
+    function nrfSend() {
+      const payload = document.getElementById("nrfPayload").value;
+      if (!sendCmd({ mod: "nrf", act: "tx", payload })) {
+        log("NRF", "ok", "TX " + payload.length + " byte · ACK mô phỏng");
+        toast("Đã gửi (mô phỏng)");
+      }
+    }
+    function nrfListen() {
+      sendCmd({ mod: "nrf", act: "rx" });
+      log("NRF", "info", "Đang nghe pipe " + document.getElementById("nrfAddr").value);
+      setTimeout(() => {
+        const fake = "RX " + Math.random().toString(16).slice(2, 10).toUpperCase();
+        pushNrf(fake);
+      }, 700);
+    }
+    function pushNrf(txt) {
+      const box = document.getElementById("nrfRx");
+      if (box.classList.contains("empty")) { box.classList.remove("empty"); box.innerHTML = ""; }
+      const p = document.createElement("div");
+      p.style.cssText = "font-family:IBM Plex Mono,monospace;font-size:12px;padding:6px 0;border-bottom:1px solid var(--line-soft)";
+      p.textContent = now() + "  " + txt;
+      box.prepend(p);
+      log("NRF", "ok", txt);
+    }
+
+    /* ——— NFC ——— */
+    const fakeTags = [
+      { uid: "04 A3 1C 6B 5E 80 80", type: "NTAG213", cap: "180 byte", ndef: "URI: https://field.local\nTEXT: kit-01" },
+      { uid: "E0 04 12 98 33 01", type: "MIFARE Classic 1K", cap: "1024 byte", ndef: "TEXT: cửa sau · mã 4412" },
+      { uid: "04 7B 90 2A 11 5F 81", type: "NTAG216", cap: "888 byte", ndef: "URI: tel:+84000000000" }
+    ];
+    function nfcScan() {
+      sendCmd({ mod: "nfc", act: "scan" });
+      log("NFC", "info", "Đưa thẻ vào vùng 13.56 MHz…");
+      setTimeout(() => {
+        const t = fakeTags[Math.floor(Math.random() * fakeTags.length)];
+        renderNfc(t);
+        toast("Đọc được " + t.type);
+      }, 800);
+    }
+    function renderNfc(t) {
+      document.getElementById("nfcUid").textContent = t.uid;
+      document.getElementById("nfcType").textContent = t.type;
+      document.getElementById("nfcCap").textContent = t.cap;
+      document.getElementById("nfcMem").value = t.ndef || "";
+      document.getElementById("ovNfc").textContent = t.type.split(" ")[0];
+      log("NFC", "ok", "UID " + t.uid + " · " + t.type);
+    }
+    function nfcRead() {
+      sendCmd({ mod: "nfc", act: "read" });
+      log("NFC", "info", "Đọc NDEF");
+    }
+    function nfcWrite() {
+      const data = document.getElementById("nfcMem").value;
+      sendCmd({ mod: "nfc", act: "write", data });
+      log("NFC", "ok", "Ghi " + data.length + " ký tự (mô phỏng)");
+      toast("Đã xếp hàng ghi NDEF");
+    }
+    function nfcWipe() {
+      sendCmd({ mod: "nfc", act: "wipe" });
+      log("NFC", "warn", "Xóa user pages");
+      toast("Wipe đã gửi");
+    }
+
+    /* ——— Wi-Fi ——— */
+    const fakeAps = [
+      ["Cafe.SauHem", "A4:2B:B0:11:9C:02", 6, -41, "WPA2"],
+      ["SG_Mesh_5G", "70:4C:A5:88:21:F0", 36, -55, "WPA3"],
+      ["tang-2-iot", "8C:19:B5:02:77:1A", 11, -62, "WPA2"],
+      ["xian_guest", "C8:3A:35:44:09:B1", 1, -71, "OPEN"],
+      ["PRINT-HP", "00:1B:78:5D:AA:10", 4, -68, "WEP"],
+      ["FPT-Family", "E4:6F:13:90:2C:66", 8, -76, "WPA2"],
+      ["ESP_FIELD_AP", "24:6F:28:AA:00:01", 1, -38, "WPA2"],
+      ["Cam_truoc_nha", "AC:84:C6:19:33:08", 9, -82, "WPA2"]
+    ];
+    function wifiScan() {
+      sendCmd({ mod: "wifi", act: "scan" });
+      log("WIFI", "info", "Probe request…");
+      const body = document.getElementById("wifiBody");
+      body.innerHTML = `<tr><td colspan="5" class="empty">Đang quét…</td></tr>`;
+      setTimeout(() => {
+        const list = fakeAps
+          .map(a => ({ r: Math.random(), row: a }))
+          .sort((a,b) => a.row[3] - b.row[3] + (Math.random()*6-3))
+          .map(x => x.row);
+        list.sort((a,b) => b[3] - a[3]);
+        renderWifi(list);
+        document.getElementById("ovWifi").textContent = list.length + " AP";
+        log("WIFI", "ok", "Tìm thấy " + list.length + " điểm truy cập");
+        toast(list.length + " AP");
+      }, 900);
+    }
+    function renderWifi(list) {
+      const body = document.getElementById("wifiBody");
+      body.innerHTML = list.map(a => {
+        const rssi = a[3];
+        const bars = rssi > -50 ? "▂▄▆█" : rssi > -65 ? "▂▄▆" : rssi > -78 ? "▂▄" : "▂";
+        return `<tr>
+          <td class="ssid">${a[0]}</td>
+          <td>${a[1]}</td>
+          <td>${a[2]}</td>
+          <td><span class="bars">${bars}</span> ${rssi}</td>
+          <td class="lock">${a[4]}</td>
+        </tr>`;
+      }).join("");
+    }
+
+    /* ——— RF ——— */
+    const freq = document.getElementById("rfFreq");
+    const freqVal = document.getElementById("rfFreqVal");
+    freq.addEventListener("input", () => {
+      freqVal.textContent = (+freq.value).toFixed(2);
+      document.getElementById("ovRf").textContent = (+freq.value).toFixed(2);
+      document.getElementById("rfNote").textContent = "Sẵn sàng · " + (+freq.value).toFixed(2) + " MHz";
+    });
+    function rfPreset() {
+      freq.value = document.getElementById("rfPreset").value;
+      freq.dispatchEvent(new Event("input"));
+    }
+    function rfListen() {
+      sendCmd({ mod: "rf", act: "rx", f: +freq.value, m: document.getElementById("rfMod").value });
+      log("RF", "info", "Nghe " + (+freq.value).toFixed(2) + " MHz " + document.getElementById("rfMod").value);
+      toast("Đang nghe");
+      drawSpec(true);
+    }
+    function rfRecord() {
+      sendCmd({ mod: "rf", act: "rec", f: +freq.value });
+      log("RF", "ok", "Ghi RAW 480 ms");
+      toast("Đã ghi RAW");
+    }
+    function rfReplay() {
+      sendCmd({ mod: "rf", act: "tx" });
+      log("RF", "ok", "Phát lại bộ đệm");
+      toast("Replay");
+    }
+    function rfSweep() {
+      sendCmd({ mod: "rf", act: "sweep" });
+      log("RF", "info", "Quét phổ quanh " + (+freq.value).toFixed(2));
+      drawSpec(true);
+    }
+
+    const spec = document.getElementById("spec");
+    const ctx = spec.getContext("2d");
+    let specLive = false;
+    function drawSpec(kick) {
+      if (kick) specLive = true;
+      const w = spec.width, h = spec.height;
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = "#161512";
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = "rgba(125,155,120,0.18)";
+      ctx.beginPath();
+      for (let i = 0; i < 8; i++) { ctx.moveTo(0, (h/8)*i); ctx.lineTo(w, (h/8)*i); }
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.strokeStyle = "#7d9b78";
+      ctx.lineWidth = 1.4;
+      for (let x = 0; x < w; x++) {
+        const n = Math.sin(x * 0.035 + Date.now() * 0.004) * 12
+                + Math.sin(x * 0.11 + Date.now() * 0.007) * 8
+                + (Math.random() * 10);
+        const peak = (x > w*0.46 && x < w*0.54) ? 38 : 0;
+        const y = h - 16 - Math.abs(n) - peak;
+        x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      if (specLive) requestAnimationFrame(() => drawSpec(false));
+    }
+    drawSpec(false);
+
+    /* ——— Quick + clock + keys ——— */
+    document.getElementById("btnScanQuick").addEventListener("click", () => {
+      if (current === "nfc") nfcScan();
+      else if (current === "nrf") nrfListen();
+      else if (current === "rf") rfSweep();
+      else wifiScan();
+    });
+
+    setInterval(() => {
+      document.getElementById("clockChip").textContent = now();
+    }, 1000);
+
+    window.addEventListener("keydown", (e) => {
+      if (["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName)) return;
+      const map = { "1": "overview", "2": "nrf", "3": "nfc", "4": "wifi", "5": "rf" };
+      if (map[e.key]) switchTab(map[e.key]);
+      if (e.key === "s" || e.key === "S") document.getElementById("btnScanQuick").click();
+      if (e.key === "c" || e.key === "C") toggleConnect();
+      if (e.key === "l" || e.key === "L") clearLog();
+    });
+
+    log("SYS", "ok", "Field Kit sẵn sàng · giao diện mô phỏng");
+    log("SYS", "info", "Bấm Kết nối để tìm ESP32 tại " + WS_URL);
+  </script>
+</body>
+</html>
